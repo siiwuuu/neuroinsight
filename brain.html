@@ -32,52 +32,61 @@
         .main-content {
             display: flex;
             max-width: 1200px;
-            margin: 80px auto;
+            margin: 60px auto;
             gap: 40px;
             padding: 0 20px;
+            align-items: flex-start;
         }
 
-        /* 뇌 이미지 영역 */
-        .brain-svg-container {
-            flex: 1;
+        /* 왼쪽: 뇌 시각화 영역 */
+        .brain-viz {
+            flex: 1.2;
             background: white;
             padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
             text-align: center;
         }
 
-        /* 뇌 부위 스타일 (SVG 내부) */
+        /* 뇌 파트 스타일 */
         .brain-part {
-            fill: #e2e8f0; /* 기본 색상 */
+            fill: #e2e8f0;
             stroke: #94a3b8;
-            stroke-width: 1;
+            stroke-width: 1.5;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-        .brain-part:hover {
-            fill: #64748b; /* 마우스 올렸을 때 */
-        }
-        .brain-part.active {
-            fill: #0f172a; /* 클릭했을 때 */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* 설명창 영역 */
+        .brain-part:hover {
+            fill: #94a3b8;
+            filter: brightness(0.9);
+        }
+
+        .brain-part.active {
+            fill: #475569; /* 선택된 영역 색상 */
+            stroke: #0f172a;
+        }
+
+        /* 오른쪽: 설명 패널 */
         .info-panel {
-            flex: 1;
+            flex: 0.8;
             background: #0f172a;
             color: white;
-            padding: 50px;
-            border-radius: 20px;
+            padding: 40px;
+            border-radius: 24px;
+            min-height: 400px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
         }
 
         .info-panel h2 {
             font-size: 32px;
             margin-bottom: 20px;
             color: #94a3b8;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
         }
 
         .info-panel p {
@@ -86,11 +95,11 @@
             color: #cbd5e1;
         }
 
-        .hint {
+        .instruction {
             margin-top: 20px;
             font-size: 14px;
-            font-style: italic;
             color: #64748b;
+            font-style: italic;
         }
     </style>
 </head>
@@ -105,36 +114,39 @@
     </nav>
 
     <div class="main-content">
-        <div class="brain-svg-container">
-            <h3>Interactive Brain Map</h3>
-            <p class="hint">클릭하여 각 영역의 기능을 확인하세요</p>
-            <svg viewBox="0 0 400 300" width="100%">
-                <path class="brain-part" id="frontal" d="M100,100 C100,50 200,50 250,100 L250,150 L100,150 Z" onclick="updateInfo('Frontal Lobe')" />
-                <path class="brain-part" id="temporal" d="M100,160 L250,160 L250,220 C200,270 100,270 100,220 Z" onclick="updateInfo('Temporal Lobe')" />
-                <rect class="brain-part" id="parietal" x="260" y="100" width="80" height="120" onclick="updateInfo('Parietal Lobe')" />
+        <div class="brain-viz">
+            <h3 style="margin-bottom: 30px; color: #0f172a;">Interactive Neuroanatomy</h3>
+            
+            <svg viewBox="0 0 400 300" width="100%" id="brain-svg">
+                <path class="brain-part" id="frontal" d="M100,100 C100,50 200,40 300,100 L300,160 L100,160 Z" onclick="showInfo('Frontal Lobe')" />
+                <path class="brain-part" id="parietal" d="M305,100 C350,100 380,130 380,180 L305,180 Z" onclick="showInfo('Parietal Lobe')" />
+                <path class="brain-part" id="temporal" d="M120,170 L280,170 L280,230 C200,260 120,260 120,230 Z" onclick="showInfo('Temporal Lobe')" />
+                <path class="brain-part" id="occipital" d="M305,185 L380,185 L350,250 C320,250 305,230 305,185 Z" onclick="showInfo('Occipital Lobe')" />
             </svg>
+            
+            <p class="instruction">각 뇌 영역을 클릭하여 세부 기능을 확인하세요.</p>
         </div>
 
         <div class="info-panel" id="info-panel">
-            <h2 id="region-title">Brain Region</h2>
-            <p id="region-desc">좌측 뇌 지도에서 궁금한 영역을 선택해 주세요. 해당 부위의 해부학적 특징과 기능에 대한 설명이 이곳에 표시됩니다.</p>
+            <h2 id="region-name">Select a Region</h2>
+            <p id="region-desc">뇌 지도의 특정 부위를 선택하면 해당 영역의 기능과 특성에 대한 학술적 설명이 여기에 표시됩니다.</p>
         </div>
     </div>
 
     <script>
-        // 데이터 정의
         const brainData = {
-            'Frontal Lobe': '전두엽은 뇌의 앞부분에 위치하며 추론, 계획, 감정 조절, 그리고 수의적 운동을 담당하는 고위 인지 기능의 핵심 본부입니다.',
-            'Temporal Lobe': '측두엽은 대뇌 반구의 양측면에 위치하며, 주로 청각 정보의 처리와 언어의 이해, 그리고 장기 기억 형성에 중요한 역할을 합니다.',
-            'Parietal Lobe': '두정엽은 상단 뒷부분에 위치하여 촉각, 압력, 통증과 같은 감각 정보를 통합하고 공간 감각 및 수리적 사고를 관장합니다.'
+            'Frontal Lobe': '전두엽은 대뇌 반구의 앞부분에 위치하며, 실행 기능, 계획, 추론, 그리고 수의적 운동 조절을 담당하는 고위 인지 기능의 중추입니다.',
+            'Parietal Lobe': '두정엽은 신체 각 부위로부터 들어오는 감각 정보를 통합하며, 공간 인지 및 수리적 사고에 핵심적인 역할을 수행합니다.',
+            'Temporal Lobe': '측두엽은 청각 정보 처리를 담당하며, 언어의 이해(베르니케 영역)와 장기 기억의 형성 및 회복에 관여합니다.',
+            'Occipital Lobe': '후두엽은 뇌의 뒷부분에 위치하며 시각 피질이 집중되어 있어, 시각 정보를 수용하고 해석하는 기능을 전담합니다.'
         };
 
-        function updateInfo(name) {
-            // 제목과 설명 변경
-            document.getElementById('region-title').innerText = name;
+        function showInfo(name) {
+            // 정보 업데이트
+            document.getElementById('region-name').innerText = name;
             document.getElementById('region-desc').innerText = brainData[name];
 
-            // 모든 파트에서 active 클래스 제거 후 클릭한 것만 추가
+            // 모든 파트에서 active 제거 및 현재 클릭한 것만 추가
             document.querySelectorAll('.brain-part').forEach(part => {
                 part.classList.remove('active');
             });
