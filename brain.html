@@ -1,15 +1,145 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<title>뇌의 구조 직접 보기</title>
-</head>
+    <meta charset="UTF-8">
+    <title>Brain Map - NeuroInsight</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Libre Baskerville', serif;
+            margin: 0;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
 
+        /* 메인 페이지와 동일한 네비바 */
+        .navbar {
+            background-color: #0f172a;
+            padding: 25px 60px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .navbar a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            margin-left: 35px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .main-content {
+            display: flex;
+            max-width: 1200px;
+            margin: 80px auto;
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        /* 뇌 이미지 영역 */
+        .brain-svg-container {
+            flex: 1;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        /* 뇌 부위 스타일 (SVG 내부) */
+        .brain-part {
+            fill: #e2e8f0; /* 기본 색상 */
+            stroke: #94a3b8;
+            stroke-width: 1;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .brain-part:hover {
+            fill: #64748b; /* 마우스 올렸을 때 */
+        }
+        .brain-part.active {
+            fill: #0f172a; /* 클릭했을 때 */
+        }
+
+        /* 설명창 영역 */
+        .info-panel {
+            flex: 1;
+            background: #0f172a;
+            color: white;
+            padding: 50px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .info-panel h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #94a3b8;
+        }
+
+        .info-panel p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #cbd5e1;
+        }
+
+        .hint {
+            margin-top: 20px;
+            font-size: 14px;
+            font-style: italic;
+            color: #64748b;
+        }
+    </style>
+</head>
 <body>
 
-<h1>뇌 구조</h1>
-<p>대뇌, 소뇌, 기저핵 등 다양한 구조를 그린 지도</p>
+    <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="brain.html">Brain Map</a>
+        <a href="disease.html">Disorder</a>
+        <a href="bbb.html">BBB</a>
+        <a href="treatment.html">Treatment</a>
+    </nav>
 
-<a href="index.html">홈으로 돌아가기</a>
+    <div class="main-content">
+        <div class="brain-svg-container">
+            <h3>Interactive Brain Map</h3>
+            <p class="hint">클릭하여 각 영역의 기능을 확인하세요</p>
+            <svg viewBox="0 0 400 300" width="100%">
+                <path class="brain-part" id="frontal" d="M100,100 C100,50 200,50 250,100 L250,150 L100,150 Z" onclick="updateInfo('Frontal Lobe')" />
+                <path class="brain-part" id="temporal" d="M100,160 L250,160 L250,220 C200,270 100,270 100,220 Z" onclick="updateInfo('Temporal Lobe')" />
+                <rect class="brain-part" id="parietal" x="260" y="100" width="80" height="120" onclick="updateInfo('Parietal Lobe')" />
+            </svg>
+        </div>
 
+        <div class="info-panel" id="info-panel">
+            <h2 id="region-title">Brain Region</h2>
+            <p id="region-desc">좌측 뇌 지도에서 궁금한 영역을 선택해 주세요. 해당 부위의 해부학적 특징과 기능에 대한 설명이 이곳에 표시됩니다.</p>
+        </div>
+    </div>
+
+    <script>
+        // 데이터 정의
+        const brainData = {
+            'Frontal Lobe': '전두엽은 뇌의 앞부분에 위치하며 추론, 계획, 감정 조절, 그리고 수의적 운동을 담당하는 고위 인지 기능의 핵심 본부입니다.',
+            'Temporal Lobe': '측두엽은 대뇌 반구의 양측면에 위치하며, 주로 청각 정보의 처리와 언어의 이해, 그리고 장기 기억 형성에 중요한 역할을 합니다.',
+            'Parietal Lobe': '두정엽은 상단 뒷부분에 위치하여 촉각, 압력, 통증과 같은 감각 정보를 통합하고 공간 감각 및 수리적 사고를 관장합니다.'
+        };
+
+        function updateInfo(name) {
+            // 제목과 설명 변경
+            document.getElementById('region-title').innerText = name;
+            document.getElementById('region-desc').innerText = brainData[name];
+
+            // 모든 파트에서 active 클래스 제거 후 클릭한 것만 추가
+            document.querySelectorAll('.brain-part').forEach(part => {
+                part.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
 </body>
 </html>
