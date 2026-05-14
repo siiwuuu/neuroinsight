@@ -1,282 +1,33 @@
-<!DOCTYPE html>
-<html lang="ko">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neuro Insight</title>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Libre Baskerville', serif;
-            margin: 0;
-            background-color: white;
-            color: #1e293b;
-        }
-
-        /* --- 상단 네비게이션 바 --- */
-        .navbar {
-            background-color: #0f172a;
-            padding: 25px 60px;
-            display: flex;
-            justify-content: flex-end;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            flex-wrap: wrap; /* 아이패드 등에서 줄바꿈 허용 */
-        }
-
-        .navbar a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            margin-left: 30px; /* 메뉴가 늘어나 간격 살짝 조정 */
-            font-size: 13px;
-            font-weight: 700;
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-        }
-
-        .navbar a:hover {
-            color: #ffffff; 
-        }
-
-        /* --- 메인 헤더 --- */
-        .header {
-            text-align: center;
-            padding: 160px 40px;
-            background-color: #0f172a;
-            color: white;
-        }
-
-        .header h1 {
-            font-size: 56px;
-            margin: 0;
-            letter-spacing: -1px;
-            font-weight: 700;
-        }
-
-        .header p {
-            font-size: 18px;
-            margin-top: 25px;
-            color: #94a3b8;
-            font-style: italic;
-        }
-
-        /* --- 본문 섹션 공통 --- */
-        .section {
-            padding: 120px 20px;
-            text-align: center;
-        }
-
-        .section h2 {
-            font-size: 28px;
-            margin-bottom: 35px;
-            font-weight: 700;
-        }
-
-        /* 제목 아래 얇은 포인트 선 (학술적 느낌) */
-        .section h2::after {
-            content: "";
-            display: block;
-            width: 40px;
-            height: 2px;
-            background: #64748b; 
-            margin: 15px auto 0;
-        }
-
-        .section p {
-            max-width: 720px;
-            margin: auto;
-            font-size: 18px;
-            line-height: 1.9;
-            color: #334155;
-            word-break: keep-all;
-        }
-
-        /* --- 중간 회색 섹션 --- */
-        .section.gray {
-            background-color: #f1f5f9; 
-            border-top: 1px solid #e2e8f0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        /* --- 세련된 4단계 프로세스 --- */
-        .flow-section {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0;
-            margin-top: 60px;
-        }
-
-        /* <a> 태그를 버튼처럼 사용하기 위해 스타일 초기화 */
-        .step {
-            position: relative;
-            padding: 0 40px;
-            text-align: center;
-            text-decoration: none; /* 밑줄 제거 */
-            cursor: pointer;
-            display: block;
-        }
-
-        /* 단계 사이의 얇은 화살표 */
-        .step:not(:last-child)::after {
-            content: "→";
-            position: absolute;
-            right: -5px;
-            top: 55%;
-            transform: translateY(-50%);
-            color: #cbd5e1;
-            font-size: 18px;
-        }
-
-        .step-label {
-            display: block;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #94a3b8;
-            margin-bottom: 10px;
-            transition: color 0.3s;
-        }
-
-        .step-title {
-            font-size: 17px;
-            font-weight: 700;
-            color: #1e293b;
-            letter-spacing: 0.5px;
-            transition: color 0.3s;
-        }
-
-        /* 마우스 오버 시 효과 */
-        .step:hover .step-title, .step:hover .step-label {
-            color: #3b82f6; /* 포인트 컬러(블루)로 변경되어 클릭할 수 있음을 알려줌 */
-            transform: translateY(-2px);
-        }
-
-        /* --- 반응형 디자인 (아이패드 및 모바일 대응) --- */
-        @media (max-width: 900px) {
-            .navbar {
-                justify-content: center;
-                padding: 15px 20px;
-            }
-            .navbar a {
-                margin: 5px 20px;
-                font-size: 11px;
-            }
-            .header {
-                padding: 100px 20px;
-            }
-            .header h1 {
-                font-size: 40px;
-            }
-            .flow-section {
-                flex-direction: column; /* 세로 배열로 변경 */
-                gap: 40px;
-            }
-            /* 세로 배열일 때는 화살표 방향을 아래로 변경 */
-            .step:not(:last-child)::after {
-                content: "↓";
-                right: auto;
-                bottom: -30px;
-                top: auto;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-<nav class="navbar">
-    <a href="login.html" style="margin-left: 0; margin-right: auto; color: #c5a059;">Login</a> 
-    <a href="index.html">Home</a>
-    <a href="brain.html">Brain Map</a>
-    <a href="archive.html">Brain Archive</a>
-    <a href="disease.html">Disorder</a>
-    <a href="bbb.html">BBB</a>
-    <a href="treatment.html">Treatment</a>
-</nav>
-
-    <div class="header">
-        <h1>NeuroInsight</h1>
-        <p>Exploring the bridge between neuro-structure and advanced therapeutics</p>
-    </div>
-
-    <div class="section">
-        <h2>About This Project</h2>
-        <p>이 프로젝트는 기초적인 뇌 구조 분석에서 시작하여, 병리학적 질환의 기전을 이해하고, 최종적으로 혈액-뇌 장벽(BBB)을 극복하는 현대적 전기 자극 치료 기술까지의 학술적 흐름을 탐구합니다.</p>
-    </div>
-
-    <div class="section gray">
-        <h2>Why This Matters</h2>
-        <p>혈액-뇌 장벽(BBB)은 외부 물질로부터 뇌를 보호하는 핵심 체계이지만, 동시에 약물 및 치료 에너지가 뇌 내부로 전달되는 것을 방해하는 주요한 장벽이기도 합니다. 본 연구는 이 한계를 극복하는 차세대 솔루션을 제안합니다.</p>
-    </div>
-
-    <div class="section">
-        <h2>Research Process</h2>
-        <p>Our study follows a four-stage systematic framework grounded in academic logic. <br>
-           <span style="font-size: 14px; color: #64748b; font-style: italic;">(각 단계를 클릭하여 자세한 내용을 확인하세요)</span></p>
-        
-        <div class="flow-section">
-            <a href="brain.html" class="step">
-                <span class="step-label">Stage 01</span>
-                <span class="step-title">Neuroanatomy</span>
-            </a>
-            <a href="disease.html" class="step">
-                <span class="step-label">Stage 02</span>
-                <span class="step-title">Pathophysiology</span>
-            </a>
-            <a href="bbb.html" class="step">
-                <span class="step-label">Stage 03</span>
-                <span class="step-title">BBB Barrier</span>
-            </a>
-            <a href="treatment.html" class="step">
-                <span class="step-label">Stage 04</span>
-                <span class="step-title">Neuromodulation</span>
-            </a>
-        </div>
-    </div>
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
-  // 사용자님의 Config (동일하게 사용)
-  const firebaseConfig = {
-    apiKey: "AIzaSyA8UUSVJ9gX0JdC04ke6FpEV5yix9FR3Is",
-    authDomain: "neuroinsight-9a401.firebaseapp.com",
-    projectId: "neuroinsight-9a401",
-    appId: "1:273812619662:web:1427bcc820350c97ca24df"
-  };
+    const firebaseConfig = { /* 사용자님의 Config 입력 */ };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+    // 로그인 상태 감시카메라
+    onAuthStateChanged(auth, (user) => {
+        const nav = document.querySelector('.navbar');
+        // 기존의 Login 버튼 찾기 (클래스명이 login-btn이라고 가정)
+        const loginBtn = document.querySelector('.login-btn') || nav.querySelector('a[href="login.html"]');
 
-  // 로그인 상태 감시
-  onAuthStateChanged(auth, (user) => {
-    const loginBtn = document.querySelector('.login-btn'); // 네비게이션의 로그인 버튼
-    if (user) {
-      // 로그인 된 상태
-      if(loginBtn) {
-        loginBtn.textContent = "Logout";
-        loginBtn.href = "#";
-        loginBtn.onclick = () => {
-          signOut(auth).then(() => alert("로그아웃 되었습니다."));
-        };
-      }
-    } else {
-      // 로그아웃 된 상태
-      if(loginBtn) {
-        loginBtn.textContent = "Login";
-        loginBtn.href = "login.html";
-        loginBtn.onclick = null;
-      }
-    }
-  });
+        if (user) {
+            // 로그인 상태일 때: "이름(Logout)"으로 변경
+            const userName = user.displayName || "User";
+            loginBtn.innerHTML = `<span style="color: #60a5fa;">${userName}</span> (Logout)`;
+            loginBtn.href = "#";
+            loginBtn.onclick = () => {
+                signOut(auth).then(() => {
+                    alert("로그아웃 되었습니다.");
+                    location.reload(); // 페이지 새로고침
+                });
+            };
+        } else {
+            // 로그아웃 상태일 때
+            loginBtn.textContent = "Login";
+            loginBtn.href = "login.html";
+            loginBtn.onclick = null;
+        }
+    });
 </script>
-</body>
-</html>
