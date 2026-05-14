@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neuro Insight</title>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
@@ -24,21 +25,22 @@
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            flex-wrap: wrap; /* 아이패드 등에서 줄바꿈 허용 */
         }
 
         .navbar a {
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            margin-left: 35px;
+            margin-left: 20px; /* 메뉴가 늘어나 간격 살짝 조정 */
             font-size: 13px;
             font-weight: 700;
             transition: 0.3s;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.2px;
         }
 
         .navbar a:hover {
-            color: #94a3b8; /* 차분한 그레이블루 호버 */
+            color: #ffffff; 
         }
 
         /* --- 메인 헤더 --- */
@@ -81,7 +83,7 @@
             display: block;
             width: 40px;
             height: 2px;
-            background: #64748b; /* 지적인 슬레이트 그레이 */
+            background: #64748b; 
             margin: 15px auto 0;
         }
 
@@ -96,12 +98,12 @@
 
         /* --- 중간 회색 섹션 --- */
         .section.gray {
-            background-color: #f1f5f9; /* 어둡고 차분한 회색 */
+            background-color: #f1f5f9; 
             border-top: 1px solid #e2e8f0;
             border-bottom: 1px solid #e2e8f0;
         }
 
-        /* --- 세련된 4단계 프로세스 (박스 제거 버전) --- */
+        /* --- 세련된 4단계 프로세스 --- */
         .flow-section {
             display: flex;
             justify-content: center;
@@ -110,10 +112,14 @@
             margin-top: 60px;
         }
 
+        /* <a> 태그를 버튼처럼 사용하기 위해 스타일 초기화 */
         .step {
             position: relative;
             padding: 0 40px;
             text-align: center;
+            text-decoration: none; /* 밑줄 제거 */
+            cursor: pointer;
+            display: block;
         }
 
         /* 단계 사이의 얇은 화살표 */
@@ -134,6 +140,7 @@
             letter-spacing: 2px;
             color: #94a3b8;
             margin-bottom: 10px;
+            transition: color 0.3s;
         }
 
         .step-title {
@@ -141,11 +148,44 @@
             font-weight: 700;
             color: #1e293b;
             letter-spacing: 0.5px;
+            transition: color 0.3s;
         }
 
-        .step:hover .step-title {
-            color: #64748b;
-            transition: 0.3s;
+        /* 마우스 오버 시 효과 */
+        .step:hover .step-title, .step:hover .step-label {
+            color: #3b82f6; /* 포인트 컬러(블루)로 변경되어 클릭할 수 있음을 알려줌 */
+            transform: translateY(-2px);
+        }
+
+        /* --- 반응형 디자인 (아이패드 및 모바일 대응) --- */
+        @media (max-width: 900px) {
+            .navbar {
+                justify-content: center;
+                padding: 15px 20px;
+            }
+            .navbar a {
+                margin: 5px 10px;
+                font-size: 11px;
+            }
+            .header {
+                padding: 100px 20px;
+            }
+            .header h1 {
+                font-size: 40px;
+            }
+            .flow-section {
+                flex-direction: column; /* 세로 배열로 변경 */
+                gap: 40px;
+            }
+            /* 세로 배열일 때는 화살표 방향을 아래로 변경 */
+            .step:not(:last-child)::after {
+                content: "↓";
+                right: auto;
+                bottom: -30px;
+                top: auto;
+                left: 50%;
+                transform: translateX(-50%);
+            }
         }
     </style>
 </head>
@@ -155,7 +195,7 @@
     <nav class="navbar">
         <a href="index.html">Home</a>
         <a href="brain.html">Brain Map</a>
-        <a href="disease.html">Disorder</a>
+        <a href="archive.html">Brain Archive</a> <a href="disease.html">Disorder</a>
         <a href="bbb.html">BBB</a>
         <a href="treatment.html">Treatment</a>
     </nav>
@@ -177,25 +217,26 @@
 
     <div class="section">
         <h2>Research Process</h2>
-        <p>Our study follows a four-stage systematic framework grounded in academic logic.</p>
+        <p>Our study follows a four-stage systematic framework grounded in academic logic. <br>
+           <span style="font-size: 14px; color: #64748b; font-style: italic;">(각 단계를 클릭하여 자세한 내용을 확인하세요)</span></p>
         
         <div class="flow-section">
-            <div class="step">
+            <a href="brain.html" class="step">
                 <span class="step-label">Stage 01</span>
                 <span class="step-title">Neuroanatomy</span>
-            </div>
-            <div class="step">
+            </a>
+            <a href="disease.html" class="step">
                 <span class="step-label">Stage 02</span>
                 <span class="step-title">Pathophysiology</span>
-            </div>
-            <div class="step">
+            </a>
+            <a href="bbb.html" class="step">
                 <span class="step-label">Stage 03</span>
                 <span class="step-title">BBB Barrier</span>
-            </div>
-            <div class="step">
+            </a>
+            <a href="treatment.html" class="step">
                 <span class="step-label">Stage 04</span>
                 <span class="step-title">Neuromodulation</span>
-            </div>
+            </a>
         </div>
     </div>
 
