@@ -1,72 +1,115 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroInsight - Home</title>
+    <title>Neuro Insight</title>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: 'Libre Baskerville', serif; margin: 0; background-color: #f8fafc; color: #1e293b; }
-        
-        /* 네비게이션 바: 기존 스타일 유지 + 프로필 공간 확보 */
-        .navbar { 
-            background-color: #000b1a; 
-            padding: 20px 60px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
+        body {
+            font-family: 'Libre Baskerville', serif;
+            margin: 0;
+            background-color: white;
+            color: #1e293b;
+        }
+
+        /* --- 상단 네비게이션 바 --- */
+        .navbar {
+            background-color: #0f172a;
+            padding: 15px 60px; /* 프로필 추가로 세로 패딩 살짝 조정 */
+            display: flex;
+            justify-content: space-between; /* 왼쪽 프로필과 오른쪽 메뉴 분리 */
+            align-items: center;
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            flex-wrap: wrap;
         }
 
-        /* 왼쪽: 로그인 시 나타나는 프로필 영역 */
+        /* 왼쪽: 로그인 시 나타나는 프로필 영역 스타일 */
         .user-profile {
             display: none; /* 로그인 전에는 숨김 */
             align-items: center;
             gap: 12px;
         }
         .user-profile img {
-            width: 35px; 
-            height: 35px; 
-            border-radius: 50%; 
-            object-fit: cover; 
-            border: 1.5px solid rgba(255,255,255,0.5);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #3b82f6;
         }
         .user-profile span {
             color: white;
             font-size: 13px;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
-        /* 오른쪽: 원래 있던 메뉴들 */
-        .nav-links { display: flex; align-items: center; }
-        .nav-links a { 
-            color: rgba(255, 255, 255, 0.7); 
-            text-decoration: none; 
-            margin-left: 25px; 
-            font-size: 12px; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            letter-spacing: 1.5px; 
+        /* 오른쪽: 메뉴 링크들 */
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 13px;
+            font-weight: 700;
             transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
         }
-        .nav-links a:hover { color: #fff; }
 
-        /* 로그인/로그아웃 버튼 스타일 */
+        .navbar a:hover {
+            color: #ffffff; 
+        }
+
+        /* 로그인/로그아웃 전용 버튼 스타일 */
         #authBtn {
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.3);
+            color: #3b82f6;
+            border: 1px solid #3b82f6;
             padding: 6px 15px;
             border-radius: 4px;
+            margin-left: 25px;
+        }
+        #authBtn:hover {
+            background-color: #3b82f6;
+            color: white;
         }
 
-        /* 메인 컨텐츠 영역 (기존 디자인 유지) */
-        .hero { padding: 120px 60px; text-align: center; }
-        .hero h1 { font-size: 48px; color: #000b1a; margin-bottom: 20px; }
+        /* --- 기존 디자인 섹션들 --- */
+        .header { text-align: center; padding: 160px 40px; background-color: #0f172a; color: white; }
+        .header h1 { font-size: 56px; margin: 0; letter-spacing: -1px; font-weight: 700; }
+        .header p { font-size: 18px; margin-top: 25px; color: #94a3b8; font-style: italic; }
+        .section { padding: 120px 20px; text-align: center; }
+        .section h2 { font-size: 28px; margin-bottom: 35px; font-weight: 700; }
+        .section h2::after { content: ""; display: block; width: 40px; height: 2px; background: #64748b; margin: 15px auto 0; }
+        .section p { max-width: 720px; margin: auto; font-size: 18px; line-height: 1.9; color: #334155; word-break: keep-all; }
+        .section.gray { background-color: #f1f5f9; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; }
+        .flow-section { display: flex; justify-content: center; align-items: center; gap: 0; margin-top: 60px; }
+        .step { position: relative; padding: 0 40px; text-align: center; text-decoration: none; cursor: pointer; display: block; }
+        .step:not(:last-child)::after { content: "→"; position: absolute; right: -5px; top: 55%; transform: translateY(-50%); color: #cbd5e1; font-size: 18px; }
+        .step-label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #94a3b8; margin-bottom: 10px; transition: color 0.3s; }
+        .step-title { font-size: 17px; font-weight: 700; color: #1e293b; letter-spacing: 0.5px; transition: color 0.3s; }
+        .step:hover .step-title, .step:hover .step-label { color: #3b82f6; transform: translateY(-2px); }
+
+        /* 반응형 */
+        @media (max-width: 900px) {
+            .navbar { justify-content: center; padding: 15px 20px; }
+            .user-profile { margin-bottom: 15px; width: 100%; justify-content: center; }
+            .header h1 { font-size: 40px; }
+            .flow-section { flex-direction: column; gap: 40px; }
+            .step:not(:last-child)::after { content: "↓"; right: auto; bottom: -30px; top: auto; left: 50%; transform: translateX(-50%); }
+        }
     </style>
 </head>
+
 <body>
 
     <nav class="navbar">
@@ -86,16 +129,50 @@
         </div>
     </nav>
 
-    <header class="hero">
+    <div class="header">
         <h1>NeuroInsight</h1>
-        <p>Exploring the complex landscapes of neuroscience.</p>
-    </header>
+        <p>Exploring the bridge between neuro-structure and advanced therapeutics</p>
+    </div>
+
+    <div class="section">
+        <h2>About This Project</h2>
+        <p>이 프로젝트는 기초적인 뇌 구조 분석에서 시작하여, 병리학적 질환의 기전을 이해하고, 최종적으로 혈액-뇌 장벽(BBB)을 극복하는 현대적 전기 자극 치료 기술까지의 학술적 흐름을 탐구합니다.</p>
+    </div>
+
+    <div class="section gray">
+        <h2>Why This Matters</h2>
+        <p>혈액-뇌 장벽(BBB)은 외부 물질로부터 뇌를 보호하는 핵심 체계이지만, 동시에 약물 및 치료 에너지가 뇌 내부로 전달되는 것을 방해하는 주요한 장벽이기도 합니다. 본 연구는 이 한계를 극복하는 차세대 솔루션을 제안합니다.</p>
+    </div>
+
+    <div class="section">
+        <h2>Research Process</h2>
+        <p>Our study follows a four-stage systematic framework grounded in academic logic. <br>
+           <span style="font-size: 14px; color: #64748b; font-style: italic;">(각 단계를 클릭하여 자세한 내용을 확인하세요)</span></p>
+        
+        <div class="flow-section">
+            <a href="brain.html" class="step">
+                <span class="step-label">Stage 01</span>
+                <span class="step-title">Neuroanatomy</span>
+            </a>
+            <a href="disease.html" class="step">
+                <span class="step-label">Stage 02</span>
+                <span class="step-title">Pathophysiology</span>
+            </a>
+            <a href="bbb.html" class="step">
+                <span class="step-label">Stage 03</span>
+                <span class="step-title">BBB Barrier</span>
+            </a>
+            <a href="treatment.html" class="step">
+                <span class="step-label">Stage 04</span>
+                <span class="step-title">Neuromodulation</span>
+            </a>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
-        // 사용자님의 실제 Config (꼭 다시 확인!)
         const firebaseConfig = {
             apiKey: "AIzaSyA8UUSVJ9gX0JdC04ke6FpEV5yix9FR3Is",
             authDomain: "neuroinsight-9a401.firebaseapp.com",
@@ -116,7 +193,7 @@
             const authBtn = document.getElementById('authBtn');
 
             if (user) {
-                // 로그인 상태
+                // 로그인 된 상태
                 userProfile.style.display = "flex";
                 userNameDisplay.textContent = user.displayName || "Researcher";
                 userPhoto.src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
@@ -131,7 +208,7 @@
                     });
                 };
             } else {
-                // 로그아웃 상태
+                // 로그아웃 된 상태
                 userProfile.style.display = "none";
                 authBtn.textContent = "Login";
                 authBtn.href = "login.html";
