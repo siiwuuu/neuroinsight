@@ -241,6 +241,42 @@
             </a>
         </div>
     </div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
+  // 사용자님의 Config (동일하게 사용)
+  const firebaseConfig = {
+    apiKey: "AIzaSyA8UUSVJ9gX0JdC04ke6FpEV5yix9FR3Is",
+    authDomain: "neuroinsight-9a401.firebaseapp.com",
+    projectId: "neuroinsight-9a401",
+    appId: "1:273812619662:web:1427bcc820350c97ca24df"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // 로그인 상태 감시
+  onAuthStateChanged(auth, (user) => {
+    const loginBtn = document.querySelector('.login-btn'); // 네비게이션의 로그인 버튼
+    if (user) {
+      // 로그인 된 상태
+      if(loginBtn) {
+        loginBtn.textContent = "Logout";
+        loginBtn.href = "#";
+        loginBtn.onclick = () => {
+          signOut(auth).then(() => alert("로그아웃 되었습니다."));
+        };
+      }
+    } else {
+      // 로그아웃 된 상태
+      if(loginBtn) {
+        loginBtn.textContent = "Login";
+        loginBtn.href = "login.html";
+        loginBtn.onclick = null;
+      }
+    }
+  });
+</script>
 </body>
 </html>
