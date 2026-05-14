@@ -8,26 +8,29 @@
     <style>
         body { font-family: 'Libre Baskerville', serif; margin: 0; background-color: #f8fafc; color: #1e293b; display: flex; flex-direction: column; min-height: 100vh; }
         
-        /* 네비게이션 바 */
-        .navbar { background-color: #000b1a; padding: 25px 60px; display: flex; justify-content: flex-end; }
-        .navbar a { color: rgba(255, 255, 255, 0.7); text-decoration: none; margin-left: 30px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
-        
+        /* 네비게이션 바 - 로그인 페이지와 동일한 네이비톤 유지 */
+        .navbar { background-color: #0f172a; padding: 25px 60px; display: flex; justify-content: flex-end; align-items: center; }
+        .navbar a { color: rgba(255, 255, 255, 0.8); text-decoration: none; margin-left: 30px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s; }
+        .navbar a:hover { color: #fff; }
+
         /* 회원가입 카드 */
         .auth-container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 60px 20px; }
         .auth-card { background: white; padding: 45px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); width: 100%; max-width: 450px; text-align: center; }
-        .auth-card h2 { font-size: 28px; margin-bottom: 10px; color: #000b1a; }
+        .auth-card h2 { font-size: 28px; margin-bottom: 10px; color: #0f172a; }
         .auth-card p { color: #64748b; font-size: 14px; margin-bottom: 30px; }
 
         .input-group { text-align: left; margin-bottom: 18px; }
         .input-group label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: #475569; letter-spacing: 1px; }
-        .input-group input { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit; box-sizing: border-box; }
-        .input-group input:focus { outline: none; border-color: #000b1a; }
+        .input-group input { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit; box-sizing: border-box; transition: 0.3s; }
+        .input-group input:focus { outline: none; border-color: #0f172a; }
 
-        .auth-btn { width: 100%; padding: 14px; background-color: #000b1a; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .auth-btn { width: 100%; padding: 14px; background-color: #0f172a; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 10px; }
         .auth-btn:hover { background-color: #1e293b; }
 
         .footer-links { margin-top: 25px; font-size: 13px; color: #64748b; }
-        .footer-links a { color: #000b1a; text-decoration: none; font-weight: 700; }
+        /* 하단 링크 강조 */
+        .footer-links a { color: #0f172a; text-decoration: none; font-weight: 700; margin-left: 5px; }
+        .footer-links a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -36,6 +39,9 @@
         <a href="index.html">Home</a>
         <a href="brain.html">Brain Map</a>
         <a href="archive.html">Brain Archive</a>
+        <a href="disease.html">Disorder</a>
+        <a href="bbb.html">BBB</a>
+        <a href="treatment.html">Treatment</a>
     </nav>
 
     <div class="auth-container">
