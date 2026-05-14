@@ -8,9 +8,23 @@
     <style>
         body { font-family: 'Libre Baskerville', serif; margin: 0; background-color: #f8fafc; color: #1e293b; display: flex; flex-direction: column; min-height: 100vh; }
         
-        /* 네비게이션 바 - 로그인 페이지와 동일한 네이비톤 유지 */
-        .navbar { background-color: #0f172a; padding: 25px 60px; display: flex; justify-content: flex-end; align-items: center; }
-        .navbar a { color: rgba(255, 255, 255, 0.8); text-decoration: none; margin-left: 30px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s; }
+        /* 네비게이션 바 - Home 메뉴만 남겨 심플하게 구성 */
+        .navbar { 
+            background-color: #0f172a; 
+            padding: 25px 60px; 
+            display: flex; 
+            justify-content: flex-end; 
+            align-items: center; 
+        }
+        .navbar a { 
+            color: rgba(255, 255, 255, 0.8); 
+            text-decoration: none; 
+            font-size: 13px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            transition: 0.3s; 
+        }
         .navbar a:hover { color: #fff; }
 
         /* 회원가입 카드 */
@@ -28,7 +42,6 @@
         .auth-btn:hover { background-color: #1e293b; }
 
         .footer-links { margin-top: 25px; font-size: 13px; color: #64748b; }
-        /* 하단 링크 강조 */
         .footer-links a { color: #0f172a; text-decoration: none; font-weight: 700; margin-left: 5px; }
         .footer-links a:hover { text-decoration: underline; }
     </style>
@@ -37,11 +50,6 @@
 
     <nav class="navbar">
         <a href="index.html">Home</a>
-        <a href="brain.html">Brain Map</a>
-        <a href="archive.html">Brain Archive</a>
-        <a href="disease.html">Disorder</a>
-        <a href="bbb.html">BBB</a>
-        <a href="treatment.html">Treatment</a>
     </nav>
 
     <div class="auth-container">
