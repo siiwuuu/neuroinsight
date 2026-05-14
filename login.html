@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - NeuroInsight</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Libre Baskerville', serif;
+            margin: 0;
+            background-color: #f8fafc;
+            color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 네비게이션 바 (통일성 유지) */
+        .navbar {
+            background-color: #0f172a;
+            padding: 25px 60px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .navbar a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* 로그인 카드 컨테이너 */
+        .login-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .login-card {
+            background: white;
+            padding: 50px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-card h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        .login-card p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 35px;
+        }
+
+        /* 입력창 스타일 */
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #0f172a;
+        }
+
+        /* 버튼 스타일 */
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #0f172a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background-color: #1e293b;
+        }
+
+        .footer-links {
+            margin-top: 25px;
+            font-size: 13px;
+        }
+
+        .footer-links a {
+            color: #64748b;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="brain.html">Brain Map</a>
+        <a href="archive.html">Brain Archive</a>
+        <a href="disease.html">Disorder</a>
+        <a href="bbb.html">BBB</a>
+        <a href="treatment.html">Treatment</a>
+    </nav>
+
+    <div class="login-container">
+        <div class="login-card">
+            <h2>Welcome Back</h2>
+            <p>Access the NeuroInsight Archive</p>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="name@example.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+
+            <div class="footer-links">
+                <a href="#">Forgot password?</a>
+                <span>•</span>
+                <a href="#">Create account</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
