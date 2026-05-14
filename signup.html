@@ -1,108 +1,38 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - NeuroInsight</title>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Libre Baskerville', serif; margin: 0; background-color: #f8fafc; color: #1e293b; display: flex; flex-direction: column; min-height: 100vh; }
-        .navbar { background-color: #0f172a; padding: 25px 60px; display: flex; justify-content: flex-end; align-items: center; }
-        .navbar a { color: rgba(255, 255, 255, 0.8); text-decoration: none; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
-        .auth-container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 60px 20px; }
-        .auth-card { background: white; padding: 45px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); width: 100%; max-width: 450px; text-align: center; }
-        .auth-card h2 { font-size: 28px; margin-bottom: 10px; color: #0f172a; }
-        .auth-card p { color: #64748b; font-size: 14px; margin-bottom: 30px; }
-        .input-group { text-align: left; margin-bottom: 18px; }
-        .input-group label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: #475569; }
-        .input-group input { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; box-sizing: border-box; }
-        .auth-btn { width: 100%; padding: 14px; background-color: #0f172a; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; }
-        .footer-links { margin-top: 25px; font-size: 13px; color: #64748b; }
-        .footer-links a { color: #0f172a; text-decoration: none; font-weight: 700; }
-    </style>
-</head>
-<body>
-
-    <nav class="navbar">
-        <a href="index.html">Home</a>
-    </nav>
-
-    <div class="auth-container">
-        <div class="auth-card">
-            <h2>Create Account</h2>
-            <p>Join the NeuroInsight Research Community</p>
-            
-            <form id="signupForm">
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" id="email" placeholder="name@example.com" required>
-                </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="password" placeholder="Min. 8 characters" required>
-                </div>
-                <div class="input-group">
-                    <label>Confirm Password</label>
-                    <input type="password" id="confirmPassword" placeholder="Repeat your password" required>
-                </div>
-                <button type="submit" class="auth-btn">Register</button>
-            </form>
-
-            <div class="footer-links">
-                Already have an account? <a href="login.html">Sign In</a>
-            </div>
-        </div>
+<form id="signupForm">
+    <div class="input-group">
+        <label>User Name (ID)</label>
+        <input type="text" id="username" placeholder="사이트에서 사용할 이름" required>
     </div>
+    <div class="input-group">
+        <label>Email Address</label>
+        <input type="email" id="email" placeholder="name@example.com" required>
+    </div>
+    </form>
 
-    <script type="module">
-        // Firebase 앱 및 인증 모듈 가져오기
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
-        // 사용자님의 Firebase 설정값
-        const firebaseConfig = {
-            apiKey: "AIzaSyA8UUSVJ9gX0JdC04ke6FpEV5yix9FR3Is",
-            authDomain: "neuroinsight-9a401.firebaseapp.com",
-            projectId: "neuroinsight-9a401",
-            storageBucket: "neuroinsight-9a401.firebasestorage.app",
-            messagingSenderId: "273812619662",
-            appId: "1:273812619662:web:1427bcc820350c97ca24df",
-            measurementId: "G-L8F2G12TM9"
-        };
+    const firebaseConfig = { /* 사용자님의 Config 입력 */ };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-        // Firebase 초기화
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
 
-        // 회원가입 폼 제출 이벤트 처리
-        const signupForm = document.getElementById('signupForm');
-        signupForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // 페이지 새로고침 방지
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            // 비밀번호 확인 검사
-            if (password !== confirmPassword) {
-                alert("비밀번호가 서로 일치하지 않습니다.");
-                return;
-            }
-
-            // Firebase 회원가입 요청
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    alert("회원가입이 성공적으로 완료되었습니다!");
-                    window.location.href = "index.html"; // 성공 시 메인으로 이동
-                })
-                .catch((error) => {
-                    let errorMessage = "가입 실패: ";
-                    if (error.code === 'auth/email-already-in-use') errorMessage += "이미 사용 중인 이메일입니다.";
-                    else if (error.code === 'auth/weak-password') errorMessage += "비밀번호를 6자 이상 입력하세요.";
-                    else errorMessage += error.message;
-                    alert(errorMessage);
-                });
-        });
-    </script>
-</body>
-</html>
+        try {
+            // 1. 계정 생성
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            // 2. 사용자 프로필에 이름(아이디) 저장
+            await updateProfile(userCredential.user, { displayName: username });
+            
+            alert(`${username}님, 환영합니다!`);
+            window.location.href = "index.html";
+        } catch (error) {
+            alert("에러 발생: " + error.message);
+        }
+    });
+</script>
