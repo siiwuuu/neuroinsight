@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
+        /* --- [유지] 사용자님의 기존 스타일 --- */
         body {
             font-family: 'Libre Baskerville', serif;
             margin: 0;
@@ -18,21 +19,22 @@
         /* --- 상단 네비게이션 바 --- */
         .navbar {
             background-color: #0f172a;
-            padding: 15px 60px; /* 프로필 추가로 세로 패딩 살짝 조정 */
+            padding: 25px 60px;
             display: flex;
-            justify-content: space-between; /* 왼쪽 프로필과 오른쪽 메뉴 분리 */
-            align-items: center;
+            justify-content: flex-end; /* 우측 정렬 유지 */
             position: sticky;
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             flex-wrap: wrap;
+            align-items: center; /* 세로 중앙 정렬 */
         }
 
-        /* 왼쪽: 로그인 시 나타나는 프로필 영역 스타일 */
+        /* [추가] 왼쪽 상단 프로필 영역 (기존 메뉴 간격에 영향 없음) */
         .user-profile {
-            display: none; /* 로그인 전에는 숨김 */
+            display: none; 
             align-items: center;
+            margin-right: auto; /* 프로필을 왼쪽 끝으로 배치 */
             gap: 12px;
         }
         .user-profile img {
@@ -49,16 +51,10 @@
             letter-spacing: 0.5px;
         }
 
-        /* 오른쪽: 메뉴 링크들 */
-        .nav-links {
-            display: flex;
-            align-items: center;
-        }
-
         .navbar a {
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            margin-left: 20px;
+            margin-left: 20px; /* [유지] 사용자님이 설정하신 메뉴 간격 */
             font-size: 13px;
             font-weight: 700;
             transition: 0.3s;
@@ -70,42 +66,155 @@
             color: #ffffff; 
         }
 
-        /* 로그인/로그아웃 전용 버튼 스타일 */
+        /* [추가] 로그인 버튼 강조 스타일 */
         #authBtn {
             color: #3b82f6;
             border: 1px solid #3b82f6;
-            padding: 6px 15px;
+            padding: 5px 12px;
             border-radius: 4px;
-            margin-left: 25px;
         }
-        #authBtn:hover {
-            background-color: #3b82f6;
+
+        /* --- [유지] 메인 헤더 및 섹션 스타일 --- */
+        .header {
+            text-align: center;
+            padding: 160px 40px;
+            background-color: #0f172a;
             color: white;
         }
 
-        /* --- 기존 디자인 섹션들 --- */
-        .header { text-align: center; padding: 160px 40px; background-color: #0f172a; color: white; }
-        .header h1 { font-size: 56px; margin: 0; letter-spacing: -1px; font-weight: 700; }
-        .header p { font-size: 18px; margin-top: 25px; color: #94a3b8; font-style: italic; }
-        .section { padding: 120px 20px; text-align: center; }
-        .section h2 { font-size: 28px; margin-bottom: 35px; font-weight: 700; }
-        .section h2::after { content: ""; display: block; width: 40px; height: 2px; background: #64748b; margin: 15px auto 0; }
-        .section p { max-width: 720px; margin: auto; font-size: 18px; line-height: 1.9; color: #334155; word-break: keep-all; }
-        .section.gray { background-color: #f1f5f9; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; }
-        .flow-section { display: flex; justify-content: center; align-items: center; gap: 0; margin-top: 60px; }
-        .step { position: relative; padding: 0 40px; text-align: center; text-decoration: none; cursor: pointer; display: block; }
-        .step:not(:last-child)::after { content: "→"; position: absolute; right: -5px; top: 55%; transform: translateY(-50%); color: #cbd5e1; font-size: 18px; }
-        .step-label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #94a3b8; margin-bottom: 10px; transition: color 0.3s; }
-        .step-title { font-size: 17px; font-weight: 700; color: #1e293b; letter-spacing: 0.5px; transition: color 0.3s; }
-        .step:hover .step-title, .step:hover .step-label { color: #3b82f6; transform: translateY(-2px); }
+        .header h1 {
+            font-size: 56px;
+            margin: 0;
+            letter-spacing: -1px;
+            font-weight: 700;
+        }
 
-        /* 반응형 */
+        .header p {
+            font-size: 18px;
+            margin-top: 25px;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .section {
+            padding: 120px 20px;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 28px;
+            margin-bottom: 35px;
+            font-weight: 700;
+        }
+
+        .section h2::after {
+            content: "";
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: #64748b; 
+            margin: 15px auto 0;
+        }
+
+        .section p {
+            max-width: 720px;
+            margin: auto;
+            font-size: 18px;
+            line-height: 1.9;
+            color: #334155;
+            word-break: keep-all;
+        }
+
+        .section.gray {
+            background-color: #f1f5f9; 
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        /* --- [유지] 세련된 4단계 프로세스 스타일 --- */
+        .flow-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            margin-top: 60px;
+        }
+
+        .step {
+            position: relative;
+            padding: 0 40px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            display: block;
+        }
+
+        .step:not(:last-child)::after {
+            content: "→";
+            position: absolute;
+            right: -5px;
+            top: 55%;
+            transform: translateY(-50%);
+            color: #cbd5e1;
+            font-size: 18px;
+        }
+
+        .step-label {
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        .step-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1e293b;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+        }
+
+        .step:hover .step-title, .step:hover .step-label {
+            color: #3b82f6;
+            transform: translateY(-2px);
+        }
+
+        /* --- [유지] 반응형 디자인 --- */
         @media (max-width: 900px) {
-            .navbar { justify-content: center; padding: 15px 20px; }
-            .user-profile { margin-bottom: 15px; width: 100%; justify-content: center; }
-            .header h1 { font-size: 40px; }
-            .flow-section { flex-direction: column; gap: 40px; }
-            .step:not(:last-child)::after { content: "↓"; right: auto; bottom: -30px; top: auto; left: 50%; transform: translateX(-50%); }
+            .navbar {
+                justify-content: center;
+                padding: 15px 20px;
+            }
+            .user-profile {
+                margin-bottom: 15px;
+                width: 100%;
+                justify-content: center;
+            }
+            .navbar a {
+                margin: 5px 10px;
+                font-size: 11px;
+            }
+            .header {
+                padding: 100px 20px;
+            }
+            .header h1 {
+                font-size: 40px;
+            }
+            .flow-section {
+                flex-direction: column;
+                gap: 40px;
+            }
+            .step:not(:last-child)::after {
+                content: "↓";
+                right: auto;
+                bottom: -30px;
+                top: auto;
+                left: 50%;
+                transform: translateX(-50%);
+            }
         }
     </style>
 </head>
@@ -118,15 +227,13 @@
             <span id="userNameDisplay"></span>
         </div>
 
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="brain.html">Brain Map</a>
-            <a href="archive.html">Brain Archive</a>
-            <a href="disease.html">Disorder</a>
-            <a href="bbb.html">BBB</a>
-            <a href="treatment.html">Treatment</a>
-            <a href="login.html" id="authBtn">Login</a>
-        </div>
+        <a href="index.html">Home</a>
+        <a href="brain.html">Brain Map</a>
+        <a href="archive.html">Brain Archive</a> 
+        <a href="disease.html">Disorder</a>
+        <a href="bbb.html">BBB</a>
+        <a href="treatment.html">Treatment</a>
+        <a href="login.html" id="authBtn">Login</a>
     </nav>
 
     <div class="header">
@@ -186,6 +293,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
+        // 로그인 상태 실시간 감시
         onAuthStateChanged(auth, (user) => {
             const userProfile = document.getElementById('userProfile');
             const userPhoto = document.getElementById('userPhoto');
@@ -193,7 +301,7 @@
             const authBtn = document.getElementById('authBtn');
 
             if (user) {
-                // 로그인 된 상태
+                // 로그인 시: 프로필 노출 및 버튼을 Logout으로 변경
                 userProfile.style.display = "flex";
                 userNameDisplay.textContent = user.displayName || "Researcher";
                 userPhoto.src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
@@ -208,7 +316,7 @@
                     });
                 };
             } else {
-                // 로그아웃 된 상태
+                // 로그아웃 시: 프로필 숨김 및 버튼을 Login으로 변경
                 userProfile.style.display = "none";
                 authBtn.textContent = "Login";
                 authBtn.href = "login.html";
