@@ -91,7 +91,7 @@
         .avatar-edit-btn:hover { background-color: #1d4ed8; }
         #fileInput { display: none; }
 
-        .user-name { font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 6px 0; }
+        .user-name { font-size: 20px; font-weight: 700; color: #0f172a; margin: 0; }
         .user-email { font-size: 13px; color: #64748b; margin-bottom: 24px; }
         .btn-logout {
             width: 100%;
@@ -118,23 +118,7 @@
         }
         .panel-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 20px 0; border-left: 4px solid #2563eb; padding-left: 10px; }
         
-        /* 내가 쓴 연구 로그 목록 스타일 */
         .log-list { display: flex; flex-direction: column; gap: 16px; }
-        .log-item {
-            padding: 16px;
-            border: 1px solid #f1f5f9;
-            background: #f8fafc;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-        .log-item:hover { transform: translateY(-2px); border-color: #cbd5e1; }
-        .log-info h4 { margin: 0 0 4px 0; font-size: 15px; font-weight: 600; color: #1e293b; }
-        .log-info span { font-size: 12px; color: #94a3b8; }
-        .btn-view { font-size: 12px; color: #2563eb; text-decoration: none; font-weight: 600; }
-
         .empty-message { text-align: center; color: #94a3b8; padding: 40px 0; font-size: 14px; }
 
         @media (max-width: 768px) {
@@ -164,7 +148,12 @@
                 </button>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
-            <h3 class="user-name" id="userName">Loading...</h3>
+            
+            <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <h3 class="user-name" id="userName">Loading...</h3>
+                <button id="editNameBtn" style="background: none; border: none; cursor: pointer; color: #94a3b8; font-size: 15px; padding: 0;" title="이름 변경">✏️</button>
+            </div>
+            
             <div class="user-email" id="userEmail">...@neuro.com</div>
             <button class="btn-logout" id="logoutBtn">연구 세션 종료 (로그아웃)</button>
         </div>
@@ -179,9 +168,10 @@
         </div>
     </div>
 
-      <script type="module">
+    <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+        // updateProfile 모듈이 추가로 불려옵니다.
+        import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA8UUSVJ9gX0JdC04ke6FpEV5yix9FR3Is",
@@ -196,13 +186,13 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // 유저 인증 상태 실시간 모니터링 및 UI 맵핑
+        // 유저 인증 상태 실시간 모니터링
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById("userName").textContent = user.displayName || "익명 연구원";
                 document.getElementById("userEmail").textContent = user.email;
                 
-                // 로컬 브라우저에 압축 저장해 둔 사진이 있다면 우선적으로 불러옵니다.
+                // 로컬 브라우저에 압축 저장해 둔 사진이 있다면 우선적으로 불러오기
                 const localPic = localStorage.getItem("myProfileImg");
                 if (localPic) {
                     document.getElementById("profileImg").src = localPic;
@@ -216,6 +206,29 @@
             }
         });
 
+        // 📝 사용자 이름(닉네임) 변경 로직
+        document.getElementById("editNameBtn").addEventListener("click", () => {
+            const currentName = document.getElementById("userName").textContent;
+            // 프롬프트 창을 띄워 새 이름을 입력받습니다.
+            const newName = prompt("새로운 이름을 입력하세요:", currentName !== "익명 연구원" ? currentName : "");
+            
+            // 입력값이 있고, 기존 이름과 다를 때만 업데이트 실행
+            if (newName && newName.trim() !== "" && newName !== currentName) {
+                if (auth.currentUser) {
+                    updateProfile(auth.currentUser, {
+                        displayName: newName.trim()
+                    }).then(() => {
+                        // 업데이트 성공 시 화면의 이름 즉시 변경
+                        document.getElementById("userName").textContent = newName.trim();
+                        alert("이름이 성공적으로 변경되었습니다!");
+                    }).catch((error) => {
+                        console.error("이름 변경 오류:", error);
+                        alert("이름 변경 중 문제가 발생했습니다.");
+                    });
+                }
+            }
+        });
+
         // 프로필 사진 변경 및 초경량 압축 저장 로직
         document.getElementById("fileInput").addEventListener("change", (e) => {
             const file = e.target.files[0];
@@ -224,20 +237,16 @@
                 reader.onload = function(event) {
                     const img = new Image();
                     img.onload = function() {
-                        // 캔버스(Canvas) 기능을 이용해 이미지를 150x150 사이즈로 강제 압축합니다.
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
                         
                         canvas.width = 150;
                         canvas.height = 150;
-                        
-                        // 이미지를 정가운데에 맞춰 이쁘게 그려줍니다.
                         ctx.drawImage(img, 0, 0, 150, 150);
                         
-                        // 용량을 대폭 줄인 압축 Base64 데이터 추출 (용량이 몇 KB 수준으로 줄어듦)
+                        // 용량을 대폭 줄인 압축 Base64 데이터 추출
                         const compressedData = canvas.toDataURL('image/jpeg', 0.7);
                         
-                        // 화면 이미지 변경 및 로컬 스토리지 보관
                         document.getElementById("profileImg").src = compressedData;
                         localStorage.setItem("myProfileImg", compressedData);
                         
@@ -249,7 +258,7 @@
             }
         });
 
-        // 로그아웃 시스템 작동
+        // 로그아웃 로직
         document.getElementById("logoutBtn").addEventListener("click", () => {
             localStorage.removeItem("myProfileImg");
             signOut(auth).then(() => {
