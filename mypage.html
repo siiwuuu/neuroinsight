@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Page - NeuroInsight</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- 글로벌 하이테크 디자인 시스템 --- */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            background-color: #f8fafc;
+            color: #0f172a;
+            letter-spacing: -0.2px;
+        }
+
+        /* --- 상단 네비게이션 바 --- */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 16px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; }
+        .logo { font-size: 16px; font-weight: 800; color: #070b19; text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px; }
+        .nav-right { display: flex; align-items: center; gap: 8px; }
+        .navbar a:not(.logo) {
+            color: #475569; text-decoration: none; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 6px; transition: all 0.2s ease;
+        }
+        .navbar a:not(.logo):hover { color: #2563eb; background-color: #f1f5f9; }
+
+        /* --- 마이페이지 레이아웃 --- */
+        .dashboard-container {
+            max-width: 1100px;
+            margin: 40px auto 100px;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 32px;
+        }
+
+        /* 프로필 카드 (좌측) */
+        .profile-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 40px 24px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            height: fit-content;
+        }
+        .avatar-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+        }
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #e2e8f0;
+            background-color: #f1f5f9;
+        }
+        .avatar-edit-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #2563eb;
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+            transition: background-color 0.2s;
+        }
+        .avatar-edit-btn:hover { background-color: #1d4ed8; }
+        #fileInput { display: none; }
+
+        .user-name { font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 6px 0; }
+        .user-email { font-size: 13px; color: #64748b; margin-bottom: 24px; }
+        .btn-logout {
+            width: 100%;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            color: #ef4444;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-logout:hover { background: #fef2f2; border-color: #fca5a5; }
+
+        /* 활동 내역 대시보드 (우측) */
+        .content-panel { display: flex; flex-direction: column; gap: 24px; }
+        .panel-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        }
+        .panel-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 20px 0; border-left: 4px solid #2563eb; padding-left: 10px; }
+        
+        /* 내가 쓴 연구 로그 목록 스타일 */
+        .log-list { display: flex; flex-direction: column; gap: 16px; }
+        .log-item {
+            padding: 16px;
+            border: 1px solid #f1f5f9;
+            background: #f8fafc;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .log-item:hover { transform: translateY(-2px); border-color: #cbd5e1; }
+        .log-info h4 { margin: 0 0 4px 0; font-size: 15px; font-weight: 600; color: #1e293b; }
+        .log-info span { font-size: 12px; color: #94a3b8; }
+        .btn-view { font-size: 12px; color: #2563eb; text-decoration: none; font-weight: 600; }
+
+        .empty-message { text-align: center; color: #94a3b8; padding: 40px 0; font-size: 14px; }
+
+        @media (max-width: 768px) {
+            .dashboard-container { grid-template-columns: 1fr; }
+            .navbar { padding: 16px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left"><a href="index.html" class="logo">NeuroInsight</a></div>
+        <div class="nav-right">
+            <a href="index.html">Home</a>
+            <a href="brain.html">Brain Map</a>
+            <a href="archive.html">Brain Archive</a>
+            <a href="log.html">Research Log</a>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="profile-card">
+            <div class="avatar-wrapper">
+                <img id="profileImg" class="profile-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Neuro" alt="Avatar">
+                <button class="avatar-edit-btn" onclick="document.getElementById('fileInput').click()">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </button>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+            <h3 class="user-name" id="userName">Loading...</h3>
+            <div class="user-email" id="userEmail">...@neuro.com</div>
+            <button class="btn-logout" id="logoutBtn">연구 세션 종료 (로그아웃)</button>
+        </div>
+
+        <div class="content-panel">
+            <div class="panel-card">
+                <h3 class="panel-title">My Research Logs (내가 작성한 연구 로그)</h3>
+                <div class="log-list" id="myLogList">
+                    <div class="empty-message">아직 업로드된 연구 로그가 없습니다. 'Research Log' 탭에서 첫 로그를 기록해 보세요.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+        // 이미지 업로드를 위해 Storage를 연동할 기초 설정 탑재 가능 공간
+        // import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA8UUSVJ9gX0JdC04ke6FpEV5yix9FR3Is",
+            authDomain: "neuroinsight-9a401.firebaseapp.com",
+            projectId: "neuroinsight-9a401",
+            storageBucket: "neuroinsight-9a401.firebasestorage.app",
+            messagingSenderId: "273812619662",
+            appId: "1:273812619662:web:1427bcc820350c97ca24df",
+            measurementId: "G-L8F2G12TM9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // 유저 인증 상태 실시간 모니터링 및 UI 맵핑
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // 1. 회원가입 시 입력했던 이름(displayName)과 이메일 연동
+                document.getElementById("userName").textContent = user.displayName || "익명 연구원";
+                document.getElementById("userEmail").textContent = user.email;
+                
+                // 2. 가입 유저가 설정한 프로필 이미지가 있다면 연동
+                if (user.photoURL) {
+                    document.getElementById("profileImg").src = user.photoURL;
+                }
+
+                // [추후 연동 가이드] 이곳에 Firestore 등을 연결하여 
+                // 해당 user.uid와 일치하는 authorID를 가진 로그 글만 쿼리해 와서 'myLogList'에 append 하면 마이 로그 모아보기가 완성됩니다.
+                
+            } else {
+                // 로그인 안 된 접근자는 다시 로그인 창으로 리다이렉트 보호 조치
+                alert("인증 세션이 만료되었거나 권한이 없습니다. 로그인 페이지로 이동합니다.");
+                window.location.href = "login.html";
+            }
+        });
+
+        // 프로필 사진 변경 가상 제어 로직 (Storage 연동 전 클라이언트 단 프리뷰 및 프로필 업데이트 아키텍처)
+        document.getElementById("fileInput").addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    // 화면 이미지 즉시 변경
+                    document.getElementById("profileImg").src = event.target.result;
+                    
+                    // 실제 Firebase Auth 프로필의 photoURL도 동시 로컬 업데이트 처리
+                    if(auth.currentUser) {
+                        updateProfile(auth.currentUser, {
+                            photoURL: event.target.result // 실제 서비스 고도화 시에는 Storage 업로드 후 URL 입력 권장
+                        }).then(() => {
+                            alert("프로필 사진이 성공적으로 업데이트되었습니다.");
+                        });
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 로그아웃 시스템 작동
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            signOut(auth).then(() => {
+                alert("연구 세션이 종료되었습니다.");
+                window.location.href = "index.html";
+            });
+        });
+    </script>
+</body>
+</html>
