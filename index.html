@@ -30,11 +30,11 @@
             align-items: center; /* 세로 중앙 정렬 */
         }
 
-        /* [추가] 왼쪽 상단 프로필 영역 (기존 메뉴 간격에 영향 없음) */
+        /* [추가] 왼쪽 상단 프로필 영역 */
         .user-profile {
             display: none; 
             align-items: center;
-            margin-right: auto; /* 프로필을 왼쪽 끝으로 배치 */
+            margin-right: auto; /* 프로필과 로그인 버튼 묶음을 왼쪽 끝으로 보냄 */
             gap: 12px;
         }
         .user-profile img {
@@ -51,10 +51,11 @@
             letter-spacing: 0.5px;
         }
 
+        /* [수정] 로그인 버튼이 맨 왼쪽에 올 때 프로필과의 간격을 위해 좌측 마진 조정 */
         .navbar a {
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            margin-left: 20px; /* [유지] 사용자님이 설정하신 메뉴 간격 */
+            margin-left: 20px; 
             font-size: 13px;
             font-weight: 700;
             transition: 0.3s;
@@ -66,12 +67,18 @@
             color: #ffffff; 
         }
 
-        /* [추가] 로그인 버튼 강조 스타일 */
+        /* [수정] 로그인 버튼 강조 스타일 및 위치 배치 */
         #authBtn {
             color: #3b82f6;
             border: 1px solid #3b82f6;
             padding: 5px 12px;
             border-radius: 4px;
+            margin-left: 20px; /* 초기 상태 마진 */
+        }
+        
+        /* [추가] 프로필이 활성화되었을 때 로그인 버튼과의 간격 균형을 맞추기 위한 CSS */
+        .user-profile:not([style*="display: none"]) + #authBtn {
+            margin-left: 15px;
         }
 
         /* --- [유지] 메인 헤더 및 섹션 스타일 --- */
@@ -192,6 +199,7 @@
                 margin-bottom: 15px;
                 width: 100%;
                 justify-content: center;
+                margin-right: 0; /* 모바일 관점 중앙정렬을 위해 리셋 */
             }
             .navbar a {
                 margin: 5px 10px;
@@ -226,6 +234,7 @@
             <img id="userPhoto" src="" alt="Profile">
             <span id="userNameDisplay"></span>
         </div>
+        <a href="login.html" id="authBtn">Login</a>
 
         <a href="index.html">Home</a>
         <a href="brain.html">Brain Map</a>
@@ -233,7 +242,6 @@
         <a href="disease.html">Disorder</a>
         <a href="bbb.html">BBB</a>
         <a href="treatment.html">Treatment</a>
-        <a href="login.html" id="authBtn">Login</a>
     </nav>
 
     <div class="header">
