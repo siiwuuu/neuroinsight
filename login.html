@@ -4,28 +4,158 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - NeuroInsight</title>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Libre Baskerville', serif; margin: 0; background-color: #f8fafc; color: #1e293b; display: flex; flex-direction: column; min-height: 100vh; }
-        .navbar { background-color: #0f172a; padding: 25px 60px; display: flex; justify-content: flex-end; align-items: center; }
-        .navbar a { color: rgba(255, 255, 255, 0.8); text-decoration: none; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
-        .login-container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
-        .login-card { background: white; padding: 50px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); width: 100%; max-width: 400px; text-align: center; }
-        .login-card h2 { font-size: 28px; margin-bottom: 10px; color: #0f172a; }
-        .login-card p { color: #64748b; font-size: 14px; margin-bottom: 35px; }
-        .input-group { text-align: left; margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: #475569; }
-        .input-group input { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit; box-sizing: border-box; }
-        .login-btn { width: 100%; padding: 14px; background-color: #0f172a; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; }
-        .footer-links { margin-top: 25px; font-size: 13px; }
-        .footer-links a { color: #0f172a; text-decoration: none; font-weight: 700; margin: 0 10px; }
-        .footer-links a:hover { text-decoration: underline; }
+        /* --- 홈 화면과 100% 동기화된 글로벌 디자인 시스템 --- */
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            margin: 0; 
+            background-color: #ffffff; 
+            color: #0f172a; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+            letter-spacing: -0.2px;
+        }
+        
+        /* --- 상단 네비게이션 바 (홈 화면 디자인 완전 통일) --- */
+        .navbar { 
+            background-color: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 16px 60px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 16px;
+            font-weight: 800;
+            color: #070b19;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .navbar a.nav-home-link { 
+            color: #475569; 
+            text-decoration: none; 
+            font-size: 13px; 
+            font-weight: 600; 
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        .navbar a.nav-home-link:hover {
+            color: #2563eb;
+            background-color: #f1f5f9;
+        }
+
+        /* --- 로그인 섹션 컨테이너 --- */
+        .login-container { 
+            flex: 1; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 60px 20px; 
+            /* 홈 화면의 히어로 그리드 디테일을 은은하게 배경으로 매칭 */
+            background-image: linear-gradient(#f8fafc 1px, transparent 1px), linear-gradient(90deg, #f8fafc 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* --- 로그인 카드 디자인 (홈 화면 카드 컴포넌트 스타일 계승) --- */
+        .login-card { 
+            background: #ffffff; 
+            padding: 50px 40px; 
+            border-radius: 12px; 
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            width: 100%; 
+            max-width: 380px; 
+            text-align: center; 
+        }
+        .login-card h2 { 
+            font-size: 26px; 
+            font-weight: 800;
+            margin: 0 0 10px 0; 
+            color: #020617; 
+            letter-spacing: -0.5px;
+        }
+        .login-card p { 
+            color: #64748b; 
+            font-size: 14px; 
+            margin-bottom: 35px; 
+            font-weight: 400;
+        }
+
+        /* --- 입력창 그룹 스타일 --- */
+        .input-group { text-align: left; margin-bottom: 24px; }
+        .input-group label { 
+            display: block; 
+            font-size: 11px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            color: #475569; 
+            letter-spacing: 0.5px;
+        }
+        .input-group input { 
+            width: 100%; 
+            padding: 12px 16px; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 6px; 
+            font-family: inherit; 
+            font-size: 14px;
+            color: #0f172a;
+            box-sizing: border-box; 
+            background-color: #f8fafc;
+            transition: all 0.2s ease;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #2563eb;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* --- 로그인 버튼 (홈 화면 시그니처 테크 블루 컬러로 통일) --- */
+        .login-btn { 
+            width: 100%; 
+            padding: 14px; 
+            background-color: #2563eb; 
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            font-size: 14px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            margin-top: 10px; 
+            transition: background-color 0.2s ease;
+        }
+        .login-btn:hover { 
+            background-color: #1d4ed8; 
+        }
+
+        /* --- 하단 링크 영역 --- */
+        .footer-links { margin-top: 30px; font-size: 13px; color: #94a3b8; }
+        .footer-links a { color: #475569; text-decoration: none; font-weight: 600; margin: 0 10px; transition: color 0.2s ease; }
+        .footer-links a:hover { color: #2563eb; }
+
+        /* 모바일 반응형 수치 최적화 */
+        @media (max-width: 768px) {
+            .navbar { padding: 16px 24px; }
+            .login-card { padding: 40px 24px; }
+        }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="index.html">Home</a>
+        <a href="index.html" class="logo">NeuroInsight</a>
+        <a href="index.html" class="nav-home-link">Home</a>
     </nav>
 
     <div class="login-container">
@@ -57,7 +187,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
-        // 사용자님의 Firebase 설정값
         const firebaseConfig = {
             apiKey: "AIzaSyA8UUSVJ9gX0JdC04ke6FpEV5yix9FR3Is",
             authDomain: "neuroinsight-9a401.firebaseapp.com",
