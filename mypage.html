@@ -93,6 +93,24 @@
 
         .user-name { font-size: 20px; font-weight: 700; color: #0f172a; margin: 0; }
         .user-email { font-size: 13px; color: #64748b; margin-bottom: 24px; }
+        
+        /* ✏️ 텍스트 기반의 심플한 회색 편집 버튼 스타일 */
+        .edit-name-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .edit-name-btn:hover {
+            color: #64748b;
+            background-color: #f1f5f9;
+        }
+
         .btn-logout {
             width: 100%;
             padding: 10px;
@@ -149,9 +167,9 @@
                 <input type="file" id="fileInput" accept="image/*">
             </div>
             
-            <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; margin-bottom: 12px;">
                 <h3 class="user-name" id="userName">Loading...</h3>
-                <button id="editNameBtn" style="background: none; border: none; cursor: pointer; color: #94a3b8; font-size: 15px; padding: 0;" title="이름 변경">✏️</button>
+                <button id="editNameBtn" class="edit-name-btn" title="이름 변경">Edit Name</button>
             </div>
             
             <div class="user-email" id="userEmail">...@neuro.com</div>
@@ -170,7 +188,6 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        // updateProfile 모듈이 추가로 불려옵니다.
         import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -192,7 +209,6 @@
                 document.getElementById("userName").textContent = user.displayName || "익명 연구원";
                 document.getElementById("userEmail").textContent = user.email;
                 
-                // 로컬 브라우저에 압축 저장해 둔 사진이 있다면 우선적으로 불러오기
                 const localPic = localStorage.getItem("myProfileImg");
                 if (localPic) {
                     document.getElementById("profileImg").src = localPic;
@@ -206,20 +222,34 @@
             }
         });
 
-        // 📝 사용자 이름(닉네임) 변경 로직
+        // 📝 영문 이름 변경 필터링 로직
         document.getElementById("editNameBtn").addEventListener("click", () => {
             const currentName = document.getElementById("userName").textContent;
-            // 프롬프트 창을 띄워 새 이름을 입력받습니다.
-            const newName = prompt("새로운 이름을 입력하세요:", currentName !== "익명 연구원" ? currentName : "");
+            const newName = prompt("새로운 영문 이름을 입력하세요 (영문 대소문자, 숫자, 공백만 가능):", currentName !== "익명 연구원" ? currentName : "");
             
-            // 입력값이 있고, 기존 이름과 다를 때만 업데이트 실행
-            if (newName && newName.trim() !== "" && newName !== currentName) {
+            if (newName === null) return; // 취소 버튼을 누른 경우 무시
+
+            const trimmedName = newName.trim();
+
+            if (trimmedName === "") {
+                alert("이름은 빈칸으로 설정할 수 없습니다.");
+                return;
+            }
+
+            // [핵심 변경 규칙] 오직 영어(A-Z, a-z), 숫자(0-9), 그리고 띄어쓰기(\s)만 허용하는 규칙검사
+            const englishRegex = /^[A-Za-z0-9\s]+$/;
+
+            if (!englishRegex.test(trimmedName)) {
+                alert("이름은 영문자와 숫자, 띄어쓰기만 조합하여 입력할 수 있습니다. (한글 및 특수문자 금지)");
+                return;
+            }
+
+            if (trimmedName !== currentName) {
                 if (auth.currentUser) {
                     updateProfile(auth.currentUser, {
-                        displayName: newName.trim()
+                        displayName: trimmedName
                     }).then(() => {
-                        // 업데이트 성공 시 화면의 이름 즉시 변경
-                        document.getElementById("userName").textContent = newName.trim();
+                        document.getElementById("userName").textContent = trimmedName;
                         alert("이름이 성공적으로 변경되었습니다!");
                     }).catch((error) => {
                         console.error("이름 변경 오류:", error);
@@ -244,7 +274,6 @@
                         canvas.height = 150;
                         ctx.drawImage(img, 0, 0, 150, 150);
                         
-                        // 용량을 대폭 줄인 압축 Base64 데이터 추출
                         const compressedData = canvas.toDataURL('image/jpeg', 0.7);
                         
                         document.getElementById("profileImg").src = compressedData;
@@ -257,15 +286,3 @@
                 reader.readAsDataURL(file);
             }
         });
-
-        // 로그아웃 로직
-        document.getElementById("logoutBtn").addEventListener("click", () => {
-            localStorage.removeItem("myProfileImg");
-            signOut(auth).then(() => {
-                alert("연구 세션이 종료되었습니다.");
-                window.location.href = "index.html";
-            });
-        });
-    </script>
-</body>
-</html>
