@@ -4,66 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neuro Insight</title>
+    <title>Neuro Insight - Authentication</title>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* --- [유지] 사용자님의 기존 스타일 --- */
+        /* --- 홈화면(index.html) 톤앤매너 완벽 동기화 --- */
         body {
             font-family: 'Libre Baskerville', serif;
             margin: 0;
-            background-color: white;
-            color: #1e293b;
+            background-color: #0f172a; /* 홈화면 헤더와 같은 고급스러운 어두운 배경 */
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* --- 상단 네비게이션 바 [수정] --- */
+        /* --- 상단 네비게이션 바 (index.html과 동일 스타일 유지) --- */
         .navbar {
             background-color: #0f172a;
             padding: 25px 60px;
             display: flex;
-            justify-content: space-between; /* [수정] 양쪽 끝 정렬로 변경 */
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            justify-content: space-between;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             flex-wrap: wrap;
-            align-items: center; /* 세로 중앙 정렬 */
+            align-items: center;
         }
 
-        /* [추가] 좌측 정렬 그룹 (프로필 + 로그인 버튼) */
         .nav-left {
             display: flex;
             align-items: center;
             gap: 20px;
         }
 
-        /* [추가] 우측 정렬 그룹 (나머지 메뉴들) */
         .nav-right {
             display: flex;
             align-items: center;
         }
 
-        /* [수정] 왼쪽 상단 프로필 영역 */
-        .user-profile {
-            display: none; 
-            align-items: center;
-            gap: 12px;
-        }
-        .user-profile img {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #3b82f6;
-        }
-        .user-profile span {
-            color: white;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        /* [유지] 메뉴 스타일 */
         .navbar a {
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
@@ -79,165 +56,141 @@
             color: #ffffff; 
         }
 
-        /* [수정] 좌측 그룹에 속한 로그인 버튼은 마진을 초기화하여 깔끔하게 배치 */
-        .nav-left #authBtn {
-            margin-left: 0;
-        }
-
-        /* 로그인 버튼 강조 스타일 */
         #authBtn {
             color: #3b82f6;
             border: 1px solid #3b82f6;
             padding: 5px 12px;
             border-radius: 4px;
+            margin-left: 0;
         }
 
-        /* --- [유지] 메인 헤더 및 섹션 스타일 --- */
-        .header {
-            text-align: center;
-            padding: 160px 40px;
-            background-color: #0f172a;
-            color: white;
-        }
-
-        .header h1 {
-            font-size: 56px;
-            margin: 0;
-            letter-spacing: -1px;
-            font-weight: 700;
-        }
-
-        .header p {
-            font-size: 18px;
-            margin-top: 25px;
-            color: #94a3b8;
-            font-style: italic;
-        }
-
-        .section {
-            padding: 120px 20px;
-            text-align: center;
-        }
-
-        .section h2 {
-            font-size: 28px;
-            margin-bottom: 35px;
-            font-weight: 700;
-        }
-
-        .section h2::after {
-            content: "";
-            display: block;
-            width: 40px;
-            height: 2px;
-            background: #64748b; 
-            margin: 15px auto 0;
-        }
-
-        .section p {
-            max-width: 720px;
-            margin: auto;
-            font-size: 18px;
-            line-height: 1.9;
-            color: #334155;
-            word-break: keep-all;
-        }
-
-        .section.gray {
-            background-color: #f1f5f9; 
-            border-top: 1px solid #e2e8f0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        /* --- [유지] 세련된 4단계 프로세스 스타일 --- */
-        .flow-section {
+        /* --- 로그인 / 회원가입 인증 카드 섹션 --- */
+        .auth-container {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 0;
-            margin-top: 60px;
+            padding: 40px 20px;
         }
 
-        .step {
-            position: relative;
-            padding: 0 40px;
+        .auth-card {
+            background-color: #1e293b; /* 딥 네이비 카드 바디 */
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
             text-align: center;
-            text-decoration: none;
-            cursor: pointer;
-            display: block;
         }
 
-        .step:not(:last-child)::after {
-            content: "→";
-            position: absolute;
-            right: -5px;
-            top: 55%;
-            transform: translateY(-50%);
-            color: #cbd5e1;
-            font-size: 18px;
-        }
-
-        .step-label {
-            display: block;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #94a3b8;
-            margin-bottom: 10px;
-            transition: color 0.3s;
-        }
-
-        .step-title {
-            font-size: 17px;
+        .auth-card h2 {
+            font-size: 28px;
             font-weight: 700;
-            color: #1e293b;
-            letter-spacing: 0.5px;
-            transition: color 0.3s;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
         }
 
-        .step:hover .step-title, .step:hover .step-label {
+        .auth-card p {
+            color: #94a3b8;
+            font-size: 14px;
+            font-style: italic;
+            margin-bottom: 35px;
+        }
+
+        /* 입력 폼 스타일 */
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .input-group input {
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 12px 16px;
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        /* 버튼 스타일 */
+        .submit-btn {
+            width: 100%;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #2563eb;
+        }
+
+        /* 하단 토글 링크 */
+        .switch-mode {
+            margin-top: 25px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .switch-mode a {
             color: #3b82f6;
-            transform: translateY(-2px);
+            text-decoration: none;
+            font-weight: 700;
+            margin-left: 5px;
         }
 
-        /* --- [유지] 반응형 디자인 --- */
+        .switch-mode a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- 반응형 디자인 --- */
         @media (max-width: 900px) {
             .navbar {
                 justify-content: center;
                 padding: 15px 20px;
-                flex-direction: column; /* 모바일에서는 세로 정렬 */
+                flex-direction: column;
                 gap: 15px;
             }
-            .nav-left {
+            .nav-left, .nav-right {
                 justify-content: center;
                 width: 100%;
-            }
-            .nav-right {
-                justify-content: center;
-                width: 100%;
-                flex-wrap: wrap;
             }
             .navbar a {
                 margin: 5px 10px;
                 font-size: 11px;
             }
-            .header {
-                padding: 100px 20px;
-            }
-            .header h1 {
-                font-size: 40px;
-            }
-            .flow-section {
-                flex-direction: column;
-                gap: 40px;
-            }
-            .step:not(:last-child)::after {
-                content: "↓";
-                right: auto;
-                bottom: -30px;
-                top: auto;
-                left: 50%;
-                transform: translateX(-50%);
+            .auth-card {
+                padding: 40px 25px;
             }
         }
     </style>
@@ -247,13 +200,8 @@
 
     <nav class="navbar">
         <div class="nav-left">
-            <div class="user-profile" id="userProfile">
-                <img id="userPhoto" src="" alt="Profile">
-                <span id="userNameDisplay"></span>
-            </div>
             <a href="login.html" id="authBtn">Login</a>
         </div>
-
         <div class="nav-right">
             <a href="index.html">Home</a>
             <a href="brain.html">Brain Map</a>
@@ -264,50 +212,37 @@
         </div>
     </nav>
 
-    <div class="header">
-        <h1>NeuroInsight</h1>
-        <p>Exploring the bridge between neuro-structure and advanced therapeutics</p>
-    </div>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2 id="formTitle">Sign In</h2>
+            <p id="formSubTitle">Access the NeuroInsight research platform</p>
 
-    <div class="section">
-        <h2>About This Project</h2>
-        <p>이 프로젝트는 기초적인 뇌 구조 분석에서 시작하여, 병리학적 질환의 기전을 이해하고, 최종적으로 혈액-뇌 장벽(BBB)을 극복하는 현대적 전기 자극 치료 기술까지의 학술적 흐름을 탐구합니다.</p>
-    </div>
+            <form id="authForm">
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="researcher@university.edu" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
 
-    <div class="section gray">
-        <h2>Why This Matters</h2>
-        <p>혈액-뇌 장벽(BBB)은 외부 물질로부터 뇌를 보호하는 핵심 체계이지만, 동시에 약물 및 치료 에너지가 뇌 내부로 전달되는 것을 방해하는 주요한 장벽이기도 합니다. 본 연구는 이 한계를 극복하는 차세대 솔루션을 제안합니다.</p>
-    </div>
+                <button type="submit" class="submit-btn" id="submitBtn">Sign In</button>
+            </form>
 
-    <div class="section">
-        <h2>Research Process</h2>
-        <p>Our study follows a four-stage systematic framework grounded in academic logic. <br>
-           <span style="font-size: 14px; color: #64748b; font-style: italic;">(각 단계를 클릭하여 자세한 내용을 확인하세요)</span></p>
-        
-        <div class="flow-section">
-            <a href="brain.html" class="step">
-                <span class="step-label">Stage 01</span>
-                <span class="step-title">Neuroanatomy</span>
-            </a>
-            <a href="disease.html" class="step">
-                <span class="step-label">Stage 02</span>
-                <span class="step-title">Pathophysiology</span>
-            </a>
-            <a href="bbb.html" class="step">
-                <span class="step-label">Stage 03</span>
-                <span class="step-title">BBB Barrier</span>
-            </a>
-            <a href="treatment.html" class="step">
-                <span class="step-label">Stage 04</span>
-                <span class="step-title">Neuromodulation</span>
-            </a>
+            <div class="switch-mode">
+                <span id="switchText">New to NeuroInsight?</span>
+                <a href="#" id="switchBtn">Create an account</a>
+            </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
+        // 본인의 Firebase Config 정보를 입력하세요 (기존 정보 동일 적용 가능)
         const firebaseConfig = {
             apiKey: "AIzaSyA8UUSVJ9gX0JdC04ke6FpEV5yix9FR3Is",
             authDomain: "neuroinsight-9a401.firebaseapp.com",
@@ -321,34 +256,62 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // 로그인 상태 실시간 감시
-        onAuthStateChanged(auth, (user) => {
-            const userProfile = document.getElementById('userProfile');
-            const userPhoto = document.getElementById('userPhoto');
-            const userNameDisplay = document.getElementById('userNameDisplay');
-            const authBtn = document.getElementById('authBtn');
+        let isSignUpMode = false; // 기본 모드는 로그인(Sign In)
 
-            if (user) {
-                // 로그인 시: 프로필 노출 및 버튼을 Logout으로 변경
-                userProfile.style.display = "flex";
-                userNameDisplay.textContent = user.displayName || "Researcher";
-                userPhoto.src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+        const formTitle = document.getElementById('formTitle');
+        const formSubTitle = document.getElementById('formSubTitle');
+        const submitBtn = document.getElementById('submitBtn');
+        const switchText = document.getElementById('switchText');
+        const switchBtn = document.getElementById('switchBtn');
+        const authForm = document.getElementById('authForm');
 
-                authBtn.textContent = "Logout";
-                authBtn.href = "#";
-                authBtn.onclick = (e) => {
-                    e.preventDefault();
-                    signOut(auth).then(() => {
-                        alert("로그아웃 되었습니다.");
-                        location.reload();
-                    });
-                };
+        // 로그인 <-> 회원가입 모드 전환 기능
+        switchBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            isSignUpMode = !isSignUpMode;
+
+            if (isSignUpMode) {
+                formTitle.textContent = "Create Account";
+                formSubTitle.textContent = "Join the advanced therapeutics study";
+                submitBtn.textContent = "Sign Up";
+                switchText.textContent = "Already have an account?";
+                switchBtn.textContent = "Sign In";
             } else {
-                // 로그아웃 시: 프로필 숨김 및 버튼을 Login으로 변경
-                userProfile.style.display = "none";
-                authBtn.textContent = "Login";
-                authBtn.href = "login.html";
-                authBtn.onclick = null;
+                formTitle.textContent = "Sign In";
+                formSubTitle.textContent = "Access the NeuroInsight research platform";
+                submitBtn.textContent = "Sign In";
+                switchText.textContent = "New to NeuroInsight?";
+                switchBtn.textContent = "Create an account";
+            }
+            authForm.reset();
+        });
+
+        // 폼 제출 이벤트 처리 (Firebase Auth 연결)
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (isSignUpMode) {
+                // 회원가입 프로세스
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        alert("회원가입이 완료되었습니다! 자동으로 로그인됩니다.");
+                        window.location.href = "index.html";
+                    })
+                    .catch((error) => {
+                        alert("회원가입 실패: " + error.message);
+                    });
+            } else {
+                // 로그인 프로세스
+                signInWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        alert("성공적으로 로그인되었습니다.");
+                        window.location.href = "index.html";
+                    })
+                    .catch((error) => {
+                        alert("로그인 실패: 이메일 또는 비밀번호를 확인하세요.");
+                    });
             }
         });
     </script>
