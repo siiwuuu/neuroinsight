@@ -4,351 +4,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neuro Insight - Brain Mapping & Anatomy Database</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Sign Up - Neuro Insight</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 글로벌 디자인 시스템 (홈화면과 완벽 연동) --- */
+        /* --- 기본 스타일 (index.html과 동일) --- */
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Libre Baskerville', serif;
             margin: 0;
-            background-color: #ffffff;
-            color: #0f172a;
-            line-height: 1.7;
-            letter-spacing: -0.2px;
+            background-color: #f8fafc; /* 약간의 회색빛이 도는 깔끔한 배경 */
+            color: #1e293b;
         }
 
-        /* --- 상단 네비게이션 바 (글래스모피즘) --- */
+        /* --- 상단 네비게이션 바 (index.html과 완벽히 동일) --- */
         .navbar {
-            background-color: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 16px 60px;
+            background-color: #0f172a;
+            padding: 25px 60px;
             display: flex;
             justify-content: space-between;
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            flex-wrap: wrap;
             align-items: center;
         }
-
         .nav-left {
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 20px;
         }
-
-        .logo {
-            font-size: 16px;
-            font-weight: 800;
-            color: #070b19;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .user-profile {
-            display: none; 
-            align-items: center;
-            gap: 10px;
-            border-left: 1px solid #cbd5e1;
-            padding-left: 16px;
-        }
-        .user-profile img {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .user-profile span {
-            color: #475569;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 28px;
         }
-
-        .navbar a:not(.logo):not(#authBtn) {
-            color: #475569;
+        .navbar a {
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
+            margin-left: 20px; 
             font-size: 13px;
-            font-weight: 600;
-            transition: color 0.2s ease;
-        }
-
-        .navbar a:not(.logo):not(#authBtn):hover {
-            color: #2563eb; 
-        }
-
-        /* 현재 활성화된 페이지 표시 */
-        .navbar a.active {
-            color: #2563eb;
-        }
-
-        #authBtn {
-            color: #2563eb;
-            border: 1px solid #d9e6ff;
-            background-color: #f0f5ff;
-            padding: 7px 16px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
-        #authBtn:hover {
-            background-color: #2563eb;
-            border-color: #2563eb;
-            color: white;
-        }
-
-        /* --- 히어로 섹션 (일관된 울트라 딥 네이비 + 격자 디테일) --- */
-        .hero {
-            background: linear-gradient(180deg, #070b19 0%, #020617 100%);
-            color: white;
-            padding: 120px 60px;
-            position: relative;
-            overflow: hidden;
-            border-bottom: 1px solid #1e293b;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
-        }
-
-        .hero-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background-color: rgba(59, 130, 246, 0.15);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            color: #60a5fa;
-            font-size: 11px;
             font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 20px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+        .navbar a:hover {
+            color: #ffffff; 
+        }
+
+        /* --- 인증(회원가입) 컨테이너 전용 스타일 --- */
+        .auth-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 85px); /* 네비게이션 높이 제외 */
+            padding: 40px 20px;
+        }
+
+        .auth-container {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* 부드러운 그림자 */
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .auth-container h2 {
+            font-size: 28px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #0f172a;
+        }
+
+        .auth-container p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 35px;
+            font-style: italic;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-family: sans-serif;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 {
-            font-size: 46px;
-            font-weight: 800;
-            margin: 0 0 20px 0;
-            letter-spacing: -1.2px;
-        }
-
-        .hero p {
-            font-size: 18px;
-            color: #94a3b8;
-            margin: 0;
-            max-width: 760px;
-            font-weight: 400;
-        }
-
-        /* --- 레이아웃 컨테이너 --- */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 80px 20px;
-        }
-
-        .section-title {
-            font-size: 28px;
-            font-weight: 800;
-            color: #020617;
-            margin-bottom: 14px;
-            letter-spacing: -0.5px;
-        }
-
-        .section-desc {
-            font-size: 16px;
-            color: #64748b;
-            max-width: 840px;
-            margin-bottom: 48px;
-            word-break: keep-all;
-        }
-
-        /* --- [Brain Map 전용 UI] 3열 아틀라스 데이터 그리드 --- */
-        .atlas-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            margin-bottom: 60px;
-        }
-
-        .atlas-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 28px;
-            transition: all 0.3s ease;
-        }
-
-        .atlas-card:hover {
-            border-color: #cbd5e1;
-            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.04);
-        }
-
-        .atlas-card h3 {
-            font-size: 18px;
-            font-weight: 700;
-            color: #020617;
-            margin: 0 0 12px 0;
-        }
-
-        .atlas-card p {
-            font-size: 14px;
             color: #475569;
-            margin: 0 0 20px 0;
-            min-height: 72px;
-            word-break: keep-all;
-        }
-
-        /* 데이터 스펙 표시용 디자인 리스트 */
-        .spec-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            border-top: 1px dashed #e2e8f0;
-            padding-top: 16px;
-        }
-
-        .spec-item {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
             margin-bottom: 8px;
+            font-weight: bold;
         }
 
-        .spec-label {
-            color: #64748b;
-            font-weight: 500;
-        }
-
-        .spec-value {
-            color: #0f172a;
-            font-weight: 600;
-        }
-
-        /* --- [Brain Map 전용 UI] 연구용 데이터 아카이브 테이블 --- */
-        .data-table-container {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-top: 40px;
-        }
-
-        .table-header {
-            background-color: #f8fafc;
-            padding: 20px 24px;
-            border-bottom: 1px solid #e2e8f0;
-            font-weight: 700;
-            color: #020617;
-            font-size: 16px;
-        }
-
-        table {
+        .form-group input {
             width: 100%;
-            border-collapse: collapse;
-            text-align: left;
+            padding: 12px 15px;
             font-size: 14px;
-        }
-
-        th {
-            background-color: #f8fafc;
-            color: #64748b;
-            font-weight: 600;
-            padding: 14px 24px;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        td {
-            padding: 16px 24px;
-            border-bottom: 1px solid #f1f5f9;
-            color: #334155;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 2px 8px;
+            border: 1px solid #cbd5e1;
             border-radius: 4px;
-            font-size: 11px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
             font-weight: 700;
-            background-color: #e0f2fe;
-            color: #0369a1;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: inherit;
+            margin-top: 10px;
         }
 
-        /* --- 푸터 스타일 --- */
-        footer {
-            background-color: #020617;
+        .btn-submit:hover {
+            background-color: #2563eb;
+        }
+
+        .auth-footer {
+            margin-top: 25px;
+            font-size: 14px;
             color: #64748b;
-            padding: 50px 60px;
-            font-size: 13px;
-            border-top: 1px solid #1e293b;
-            margin-top: 60px;
-        }
-        .footer-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-family: sans-serif;
         }
 
-        /* --- 반응형 뷰포트 --- */
-        @media (max-width: 1024px) {
-            .atlas-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .auth-footer a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: bold;
         }
 
-        @media (max-width: 768px) {
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- 반응형 --- */
+        @media (max-width: 900px) {
             .navbar {
-                padding: 16px 24px;
-                flex-direction: column;
-                gap: 16px;
-            }
-            .nav-right {
-                flex-wrap: wrap;
                 justify-content: center;
-                gap: 20px;
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
             }
-            .hero {
-                padding: 80px 24px;
+            .nav-left, .nav-right {
+                justify-content: center;
+                width: 100%;
+                flex-wrap: wrap;
             }
-            .hero h1 {
-                font-size: 32px;
-            }
-            .atlas-grid {
-                grid-template-columns: 1fr;
-            }
-            .data-table-container {
-                overflow-x: auto;
+            .navbar a {
+                margin: 5px 10px;
+                font-size: 11px;
             }
         }
     </style>
@@ -358,124 +182,52 @@
 
     <nav class="navbar">
         <div class="nav-left">
-            <a href="index.html" class="logo">NeuroInsight</a>
-            <div class="user-profile" id="userProfile">
-                <img id="userPhoto" src="" alt="Profile">
-                <span id="userNameDisplay"></span>
-            </div>
+            <a href="index.html" style="margin-left: 0; font-size: 16px;">NeuroInsight</a>
         </div>
 
         <div class="nav-right">
             <a href="index.html">Home</a>
-            <a href="brain.html" class="active">Brain Map</a>
+            <a href="brain.html">Brain Map</a>
             <a href="archive.html">Brain Archive</a> 
             <a href="disease.html">Disorder</a>
             <a href="bbb.html">BBB</a>
             <a href="treatment.html">Treatment</a>
-            <a href="login.html" id="authBtn">Login</a>
         </div>
     </nav>
 
-    <div class="hero">
-        <div class="hero-inner">
-            <div class="hero-badge">STAGE 01 // Neuroanatomy Mapping</div>
-            <h1>Structural Brain Atlas</h1>
-            <p>인간 대뇌 피질의 구조적 매핑 데이터를 탐색하고, 신경망 시스템의 공간적 아키텍처를 분석합니다.</p>
+    <div class="auth-wrapper">
+        <div class="auth-container">
+            <h2>Join Us</h2>
+            <p>Create an account to access advanced therapeutics research.</p>
+
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="researcher@neuro.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Min. 6 characters" required>
+                </div>
+                
+                <button type="submit" class="btn-submit">Sign Up</button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a href="login.html">Log in here</a>
+            </div>
         </div>
     </div>
-
-    <div class="container">
-        <h2 class="section-title">Cortical Region Mapping</h2>
-        <p class="section-desc">뇌의 해부학적 위치에 따른 기능 분석 데이터입니다. 각 영역의 고유 생물학적 메커니즘은 차세대 융합 공학(나노물질 타겟팅 및 전기자극 파라미터 설계)의 기초 정량 지표로 활용됩니다.</p>
-
-        <div class="atlas-grid">
-            <div class="atlas-card">
-                <h3>Frontal Lobe</h3>
-                <p>의사결정, 계획 수립, 운동 제어 및 고차원 인지 기능을 담당하는 핵심 영역입니다.</p>
-                <ul class="spec-list">
-                    <li class="spec-item"><span class="spec-label">주요 기능</span><span class="spec-value">인지·모터 제어</span></li>
-                    <li class="spec-item"><span class="spec-label">자극 타겟</span><span class="spec-value">DLPFC 영역</span></li>
-                </ul>
-            </div>
-
-            <div class="atlas-card">
-                <h3>Parietal Lobe</h3>
-                <p>체감각 정보(통각, 촉각 등)의 통합 및 공간적 정위 감각을 물리적으로 처리합니다.</p>
-                <ul class="spec-list">
-                    <li class="spec-item"><span class="spec-label">주요 기능</span><span class="spec-value">감각 정보 통합</span></li>
-                    <li class="spec-item"><span class="spec-label">자극 타겟</span><span class="spec-value">체감각 피질</span></li>
-                </ul>
-            </div>
-
-            <div class="atlas-card">
-                <h3>Temporal Lobe</h3>
-                <p>청각 정보 처리, 언어 이해(Wernicke 영역) 및 장기 기억 형성을 담당합니다.</p>
-                <ul class="spec-list">
-                    <li class="spec-item"><span class="spec-label">주요 기능</span><span class="spec-value">청각 및 기억</span></li>
-                    <li class="spec-item"><span class="spec-label">자극 타겟</span><span class="spec-value">해마 인근 영역</span></li>
-                </ul>
-            </div>
-
-            <div class="atlas-card">
-                <h3>Occipital Lobe</h3>
-                <p>망막으로부터 전달되는 시각적 자극 신호를 인지하고 처리하는 시각 피질이 위치합니다.</p>
-                <ul class="spec-list">
-                    <li class="spec-item"><span class="spec-label">주요 기능</span><span class="spec-value">시각 패턴 인지</span></li>
-                    <li class="spec-item"><span class="spec-label">자극 타겟</span><span class="spec-value">V1 시각 피질</span></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="data-table-container">
-            <div class="table-header">Anatomical Coordination & Mapping Index</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Region ID</th>
-                        <th>Anatomical Name</th>
-                        <th>Brodmann Area (BA)</th>
-                        <th>Signal Type</th>
-                        <th>Mapping Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="font-weight: 600; color: #2563eb;">REG-001</td>
-                        <td>Dorsolateral Prefrontal Cortex</td>
-                        <td>BA 9 / BA 46</td>
-                        <td>High Cognitive Executive</td>
-                        <td><span class="status-badge">Mapped</span></td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 600; color: #2563eb;">REG-002</td>
-                        <td>Primary Somatosensory Cortex</td>
-                        <td>BA 1 / BA 2 / BA 3</td>
-                        <td>Somatosensory Input</td>
-                        <td><span class="status-badge">Mapped</span></td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 600; color: #2563eb;">REG-003</td>
-                        <td>Primary Visual Cortex (V1)</td>
-                        <td>BA 17</td>
-                        <td>Visual Afferent</td>
-                        <td><span class="status-badge">Mapped</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <footer>
-        <div class="footer-inner">
-            <div>© 2026 NeuroInsight Center for Bio-Convergence Engineering. All Rights Reserved.</div>
-            <div style="font-weight: 600; color: #475569;">Academic Open Data Platform</div>
-        </div>
-    </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
+        // 기존에 사용하시던 설정값 그대로 적용
         const firebaseConfig = {
             apiKey: "AIzaSyA8UUSVJ9gX0JdC04ke6FpEV5yix9FR3Is",
             authDomain: "neuroinsight-9a401.firebaseapp.com",
@@ -489,32 +241,36 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        onAuthStateChanged(auth, (user) => {
-            const userProfile = document.getElementById('userProfile');
-            const userPhoto = document.getElementById('userPhoto');
-            const userNameDisplay = document.getElementById('userNameDisplay');
-            const authBtn = document.getElementById('authBtn');
+        document.getElementById("signupForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
 
-            if (user) {
-                userProfile.style.display = "flex";
-                userNameDisplay.textContent = user.displayName || "Researcher";
-                userPhoto.src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-
-                authBtn.textContent = "Logout";
-                authBtn.href = "#";
-                authBtn.onclick = (e) => {
-                    e.preventDefault();
-                    signOut(auth).then(() => {
-                        alert("로그아웃 되었습니다.");
-                        location.reload();
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    // 회원가입 시 입력받은 이름으로 프로필 업데이트
+                    return updateProfile(user, {
+                        displayName: name
+                    }).then(() => {
+                        alert("회원가입이 완료되었습니다! 메인 페이지로 이동합니다.");
+                        window.location.href = "index.html"; // 가입 성공 시 홈으로 리다이렉트
                     });
-                };
-            } else {
-                userProfile.style.display = "none";
-                authBtn.textContent = "Login";
-                authBtn.href = "login.html";
-                authBtn.onclick = null;
-            }
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    
+                    if(errorCode === 'auth/email-already-in-use') {
+                        alert("이미 사용 중인 이메일입니다.");
+                    } else if (errorCode === 'auth/weak-password') {
+                        alert("비밀번호는 6자리 이상이어야 합니다.");
+                    } else {
+                        alert("회원가입 오류: " + errorMessage);
+                    }
+                });
         });
     </script>
 </body>
