@@ -10,13 +10,13 @@
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             margin: 0;
-            background-color: #f8fafc; /* 인터랙티브 맵이 돋보이도록 약간의 회색 배경 */
+            background-color: #f8fafc;
             color: #0f172a;
             line-height: 1.7;
             letter-spacing: -0.2px;
         }
 
-        /* --- 상단 네비게이션 바 (홈 화면 통일) --- */
+        /* --- 상단 네비게이션 바 (메인 화면 통일) --- */
         .navbar {
             background-color: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
@@ -30,16 +30,13 @@
             border-bottom: 1px solid #e2e8f0;
             align-items: center;
         }
-
-        .nav-left { display: flex; align-items: center; gap: 24px; }
+        .nav-left { display: flex; align-items: center; }
         .logo { font-size: 16px; font-weight: 800; color: #070b19; text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px; }
         .nav-right { display: flex; align-items: center; gap: 8px; }
-
         .navbar a:not(.logo):not(#authBtn), .dropbtn {
             color: #475569; text-decoration: none; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 6px; transition: all 0.2s ease; cursor: pointer; background: none; border: none; display: flex; align-items: center; gap: 4px; font-family: inherit;
         }
         .navbar a:not(.logo):not(#authBtn):hover, .dropdown:hover .dropbtn { color: #2563eb; background-color: #f1f5f9; }
-
         .dropdown { position: relative; display: inline-block; }
         .dropdown-content {
             visibility: hidden; opacity: 0; position: absolute; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); min-width: 220px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); transition: all 0.25s ease; z-index: 1001;
@@ -47,153 +44,214 @@
         .dropdown:hover .dropdown-content { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(4px); }
         .dropdown-content a { color: #334155 !important; padding: 10px 14px !important; text-decoration: none; display: block; font-size: 13px !important; font-weight: 500 !important; border-radius: 6px; }
         .dropdown-content a:hover { background-color: #f1f5f9 !important; color: #2563eb !important; }
-
         #authBtn { color: #2563eb; border: 1px solid #d9e6ff; background-color: #f0f5ff; padding: 7px 16px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; margin-left: 12px; transition: all 0.2s ease; }
         #authBtn:hover { background-color: #2563eb; border-color: #2563eb; color: white; }
 
-        /* --- 인터랙티브 맵 레이아웃 --- */
+        /* --- 헤더 섹션 --- */
         .header-section {
             background: linear-gradient(180deg, #070b19 0%, #0f172a 100%);
             color: white;
-            padding: 80px 60px 40px;
+            padding: 70px 60px 40px;
             text-align: center;
         }
-        .header-section h1 { font-size: 36px; font-weight: 800; margin: 0 0 16px 0; }
-        .header-section p { font-size: 16px; color: #94a3b8; max-width: 600px; margin: 0 auto; }
+        .header-section h1 { font-size: 34px; font-weight: 800; margin: 0 0 12px 0; letter-spacing: -0.5px; }
+        .header-section p { font-size: 15px; color: #94a3b8; max-width: 600px; margin: 0 auto; font-weight: 400; }
 
+        /* --- 메인 아키텍처 그리드 레이아웃 --- */
         .explorer-container {
-            max-width: 1200px;
-            margin: -40px auto 100px;
-            padding: 0 20px;
+            max-width: 1300px;
+            margin: -30px auto 100px;
+            padding: 0 24px;
             display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 30px;
+            grid-template-columns: 480px 1fr;
+            gap: 32px;
             position: relative;
             z-index: 10;
         }
 
-        /* --- 좌측: 뇌 SVG 그래픽 영역 --- */
-        .brain-visual {
+        /* --- 좌측 패널: 대분류 영역 선택 (메인 뇌 시각화) --- */
+        .brain-visual-card {
             background: #ffffff;
             border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
             border: 1px solid #e2e8f0;
-            padding: 40px;
+            padding: 35px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            min-height: 500px;
+            box-sizing: border-box;
+        }
+        .card-title {
+            align-self: flex-start;
+            font-size: 14px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 25px;
         }
 
-        /* SVG 뇌 부위별 인터랙티브 효과 */
+        /* 세련된 뇌 맵 그래픽 디자인 */
+        .brain-svg-container {
+            width: 100%;
+            max-width: 380px;
+            margin-bottom: 30px;
+        }
         .brain-part {
-            fill: #e2e8f0;
-            stroke: #ffffff;
+            fill: #f1f5f9;
+            stroke: #cbd5e1;
             stroke-width: 2;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s ease;
         }
-        
         .brain-part:hover {
-            fill: #93c5fd;
-            transform: scale(1.02);
-            filter: drop-shadow(0 10px 15px rgba(37, 99, 235, 0.2));
+            fill: #e0f2fe;
+            stroke: #0ea5e9;
         }
-
         .brain-part.active {
-            fill: #2563eb;
-            filter: drop-shadow(0 10px 20px rgba(37, 99, 235, 0.4));
+            fill: #0ea5e9;
+            stroke: #0284c7;
         }
 
-        /* --- 우측: 실시간 정보 패널 --- */
-        .info-panel {
+        /* 대분류 버튼 그룹 리스트 (인터랙션 보완용) */
+        .major-region-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .major-btn {
+            width: 100%;
+            padding: 14px 20px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .major-btn:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #0f172a;
+        }
+        .major-btn.active {
+            background-color: #0ea5e9;
+            border-color: #0ea5e9;
+            color: white;
+        }
+        .major-btn .arrow { opacity: 0.5; transition: transform 0.2s; }
+        .major-btn.active .arrow { transform: translateX(4px); opacity: 1; }
+
+        /* --- 우측 패널: 세부 영역 및 실시간 데이터 아카이브 --- */
+        .data-panel-card {
             background: #ffffff;
             border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
             border: 1px solid #e2e8f0;
             padding: 40px;
             display: flex;
             flex-direction: column;
+            min-height: 600px;
+            box-sizing: border-box;
         }
 
-        .info-badge {
-            display: inline-block;
-            background-color: #f1f5f9;
+        /* 공백 가이드 상태 */
+        .panel-placeholder {
+            margin: auto;
+            text-align: center;
+            color: #94a3b8;
+            max-width: 320px;
+        }
+        .panel-placeholder svg { width: 44px; height: 44px; margin-bottom: 16px; opacity: 0.6; color: #cbd5e1; }
+        .panel-placeholder h3 { font-size: 18px; color: #475569; margin: 0 0 8px 0; font-weight: 700; }
+        .panel-placeholder p { font-size: 14px; margin: 0; line-height: 1.5; }
+
+        /* 세부 영역(Sub-regions) 버튼 레이아웃 */
+        .sub-region-section {
+            margin-bottom: 35px;
+            display: none;
+        }
+        .sub-section-title {
+            font-size: 12px;
+            font-weight: 700;
             color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 14px;
+        }
+        .sub-btn-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .sub-btn {
+            padding: 10px 18px;
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .sub-btn:hover {
+            background-color: #e2e8f0;
+            color: #0f172a;
+        }
+        .sub-btn.active {
+            background-color: #2563eb;
+            border-color: #2563eb;
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        /* 최종 상세 정보 출력 레이아웃 */
+        .details-section {
+            display: none;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 30px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .region-badge {
+            display: inline-block;
+            background-color: #eff6ff;
+            color: #2563eb;
             font-size: 11px;
             font-weight: 700;
             padding: 4px 10px;
-            border-radius: 20px;
+            border-radius: 4px;
+            margin-bottom: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
-            width: fit-content;
         }
+        .details-title { font-size: 26px; font-weight: 800; color: #0f172a; margin: 0 0 16px 0; letter-spacing: -0.5px; }
+        .details-desc { font-size: 15px; color: #475569; margin: 0 0 30px 0; line-height: 1.6; }
+        
+        .spec-list { list-style: none; padding: 0; margin: 0; }
+        .spec-item { padding: 16px 0; border-top: 1px solid #f1f5f9; }
+        .spec-label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .spec-value { font-size: 14px; font-weight: 500; color: #1e293b; }
 
-        .info-title {
-            font-size: 28px;
-            font-weight: 800;
-            color: #020617;
-            margin: 0 0 16px 0;
-            letter-spacing: -0.5px;
-        }
-
-        .info-desc {
-            font-size: 15px;
-            color: #475569;
-            margin: 0 0 32px 0;
-            line-height: 1.6;
-            word-break: keep-all;
-        }
-
-        .data-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            flex-grow: 1;
-        }
-
-        .data-item {
-            padding: 16px 0;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .data-label {
-            font-size: 12px;
-            font-weight: 700;
-            color: #64748b;
-            text-transform: uppercase;
-            margin-bottom: 6px;
-        }
-
-        .data-value {
-            font-size: 14px;
-            font-weight: 500;
-            color: #0f172a;
-        }
-
-        /* 초기 상태 가이드 텍스트 */
-        .default-state {
-            text-align: center;
-            color: #94a3b8;
-            margin: auto 0;
-        }
-        .default-state svg {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-
-        /* --- 반응형 --- */
+        /* 반응형 디자인 */
         @media (max-width: 992px) {
             .explorer-container { grid-template-columns: 1fr; }
-            .brain-visual { min-height: 400px; }
+            .data-panel-card { min-height: auto; }
         }
         @media (max-width: 768px) {
             .navbar { padding: 16px 24px; flex-direction: column; gap: 16px; }
-            .nav-right { flex-wrap: wrap; justify-content: center; gap: 8px; }
-            .header-section { padding: 60px 24px 40px; }
+            .nav-right { flex-wrap: wrap; justify-content: center; }
+            .header-section { padding: 60px 24px 35px; }
         }
     </style>
 </head>
@@ -226,141 +284,238 @@
     </nav>
 
     <div class="header-section">
-        <h1>Interactive Brain Atlas</h1>
-        <p>좌측의 뇌 모형에서 특정 영역을 클릭하여 구조적 기능과 관련 병리학 데이터를 탐색하세요.</p>
+        <h1>Anatomical Hierarchy Atlas</h1>
+        <p>좌측에서 대분류 뇌 영역을 선택한 후, 우측에 동적으로 생성되는 세부 구조별 버튼을 클릭하여 정밀 데이터를 획득하세요.</p>
     </div>
 
     <div class="explorer-container">
         
-        <div class="brain-visual">
-            <svg viewBox="0 0 500 400" width="100%" height="100%" style="max-width: 450px;">
-                <path id="frontal" class="brain-part" d="M220,50 C120,50 60,120 70,220 C80,260 140,280 180,270 L240,160 Z" />
-                
-                <path id="parietal" class="brain-part" d="M230,45 C300,45 360,70 390,130 C400,150 390,190 350,210 L250,170 Z" />
-                
-                <path id="occipital" class="brain-part" d="M360,220 C400,200 440,230 430,280 C420,310 380,320 350,300 L300,240 Z" />
-                
-                <path id="temporal" class="brain-part" d="M170,280 C130,290 140,340 190,350 C240,360 300,340 330,300 L260,200 Z" />
-                
-                <path id="cerebellum" class="brain-part" d="M320,310 C360,330 380,370 350,390 C320,410 270,390 260,360 Z" />
-                
-                <path id="brainstem" class="brain-part" d="M240,350 C260,350 270,370 260,420 C250,450 220,450 210,420 C200,380 210,360 240,350 Z" />
-            </svg>
-        </div>
-
-        <div class="info-panel" id="infoPanel">
-            <div class="default-state" id="defaultState">
-                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M15 3a2 2 0 012 2v14a2 2 0 01-2 2H9a2 2 0 01-2-2V5a2 2 0 012-2h6zm-3 14a1 1 0 100-2 1 1 0 000 2z"/></svg>
-                <h3>영역을 선택해주세요</h3>
-                <p>뇌의 특정 부위를 클릭하면 상세 학술 데이터가 로드됩니다.</p>
+        <div class="brain-visual-card">
+            <div class="card-title">Major Brain Structures</div>
+            
+            <div class="brain-svg-container">
+                <svg viewBox="0 0 200 160" width="100%">
+                    <path id="geo-frontal" class="brain-part" d="M90,20 C50,20 20,50 25,90 C30,110 55,120 75,115 L100,70 Z" />
+                    <path id="geo-parietal" class="brain-part" d="M95,18 C130,18 155,30 170,60 C175,70 170,90 150,100 L105,80 Z" />
+                    <path id="geo-temporal" class="brain-part" d="M70,120 C50,125 55,145 75,150 C100,155 125,145 140,125 L110,85 Z" />
+                    <path id="geo-occipital" class="brain-part" d="M155,105 C175,95 190,110 185,130 C180,145 160,150 145,140 L125,115 Z" />
+                </svg>
             </div>
 
-            <div id="activeState" style="display: none;">
-                <div class="info-badge" id="infoStage">STAGE 01. Anatomy</div>
-                <h2 class="info-title" id="infoTitle">Brain Region</h2>
-                <p class="info-desc" id="infoDesc">여기에 부위별 설명이 출력됩니다.</p>
+            <div class="major-region-list">
+                <button class="major-btn" data-region="frontal"><span>Frontal Lobe (전두엽)</span><span class="arrow">→</span></button>
+                <button class="major-btn" data-region="parietal"><span>Parietal Lobe (두정엽)</span><span class="arrow">→</span></button>
+                <button class="major-btn" data-region="temporal"><span>Temporal Lobe (측두엽)</span><span class="arrow">→</span></button>
+                <button class="major-btn" data-region="occipital"><span>Occipital Lobe (후두엽)</span><span class="arrow">→</span></button>
+            </div>
+        </div>
+
+        <div class="data-panel-card" id="dataPanel">
+            
+            <div class="panel-placeholder" id="panelPlaceholder">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                <h3>구조적 탐색 시작하기</h3>
+                <p>좌측 리스트나 모형에서 분석할 대분류 뇌 영역을 먼저 지정해 주세요.</p>
+            </div>
+
+            <div class="sub-region-section" id="subRegionSection">
+                <div class="sub-section-title" id="subSectionTitle">Select Detailed Sub-Region</div>
+                <div class="sub-btn-grid" id="subBtnGrid">
+                    </div>
+            </div>
+
+            <div class="details-section" id="detailsSection">
+                <div class="region-badge" id="dataBadge">SUB-REGION ANALYSIS</div>
+                <h2 class="details-title" id="dataTitle">세부 영역명</h2>
+                <p class="details-desc" id="dataDesc">해당 미세 구조의 핵심 기능적 아키텍처에 대한 상세 설명이 렌더링됩니다.</p>
                 
-                <ul class="data-list">
-                    <li class="data-item">
-                        <div class="data-label">Key Functions (주요 기능)</div>
-                        <div class="data-value" id="infoFunction">-</div>
+                <ul class="spec-list">
+                    <li class="spec-item">
+                        <div class="spec-label">Cellular & Synaptic Function (세포 및 신경 기능)</div>
+                        <div class="spec-value" id="dataFunc">-</div>
                     </li>
-                    <li class="data-item">
-                        <div class="data-label">Related Pathology (관련 질환)</div>
-                        <div class="data-value" id="infoPathology" style="color: #ef4444; font-weight: 600;">-</div>
+                    <li class="spec-item">
+                        <div class="spec-label">Clinical Relevance (임상적 연계 질환)</div>
+                        <div class="spec-value" id="dataDisease" style="color: #ef4444; font-weight: 600;">-</div>
                     </li>
-                    <li class="data-item">
-                        <div class="data-label">Engineering Target (공학적 타겟링)</div>
-                        <div class="data-value" id="infoTarget" style="color: #2563eb; font-weight: 600;">-</div>
+                    <li class="spec-item">
+                        <div class="spec-label">Advanced Bio-Engineering Application (의공학적 제어 기술)</div>
+                        <div class="spec-value" id="dataEng" style="color: #2563eb; font-weight: 600;">-</div>
                     </li>
                 </ul>
             </div>
-        </div>
 
+        </div>
     </div>
 
     <script>
-        // 뇌 부위별 학술 데이터베이스 객체
-        const brainData = {
+        // 대분류 안에 귀속된 촘촘한 세부 뇌 영역(Sub-regions) 데이터베이스 구축
+        const structuralDatabase = {
             frontal: {
-                title: "Frontal Lobe (전두엽)",
-                desc: "뇌의 앞부분에 위치하며 인간의 고차원적인 인지 기능, 의사 결정, 성격, 감정 조절 및 자발적 운동을 담당하는 중추입니다.",
-                func: "논리적 사고, 문제 해결, 언어 표현 (브로카 영역), 작업 기억",
-                pathology: "조현병(Schizophrenia), ADHD, 전두측두엽 치매",
-                target: "경두개 직류자극(tDCS)을 통한 전두엽 피질 활성화 유도"
+                name: "Frontal Lobe (전두엽)",
+                subs: {
+                    prefrontal: {
+                        title: "Dorsolateral Prefrontal Cortex (배외측 전두엽 피질 / DLPFC)",
+                        desc: "인간의 최고위 사령탑 역할을 하는 곳으로, 고도의 실행 기능(Executive Function), 계획 수립, 작업 기억 유지 및 이성적 의사결정을 관장하는 핵심 영역입니다.",
+                        func: "목적 지향적 행동 조절, 고차원 인지 제어, 충동 억제 시스템 작동",
+                        disease: "조현병(음성 증상), 심각한 주요 우울 장애(MDD), 성격 변화 장애",
+                        eng: "경두개 자기자극술(rTMS) 치료 시 우울증 완화를 위한 주 타겟 좌표로 활용"
+                    },
+                    broca: {
+                        title: "Broca's Area (브로카 영역)",
+                        desc: "좌측 전두엽 하단에 주로 위치하며, 생각을 언어적인 형태로 바꾸고 발성 기관을 제어하여 실제로 말을 할 수 있게 만드는 운동성 언어 중추입니다.",
+                        func: "언어 구조화, 문법적 문장 생성, 구강 조음 근육 운동 신호 전송",
+                        disease: "브로카 실어증 (말은 알아듣지만 문장을 유창하게 구사하지 못하는 증상)",
+                        eng: "뇌 수술(Awake Surgery) 시 실어증 방지를 위한 전극 기반 실시간 피질 매핑 타겟"
+                    },
+                    motor: {
+                        title: "Primary Motor Cortex (1차 운동 피질)",
+                        desc: "전두엽의 가장 후방 경계에 위치하며, 척수를 통해 신체 각 부위의 수의근(자발적 움직임 근육)에 정밀한 수축 명령을 직접 하달하는 출력 기지입니다.",
+                        func: "신체 좌우 반대측 근육의 자발적 운동 신호 생성 및 매핑 통제",
+                        disease: "뇌졸중(Stroke)에 의한 편마비, 운동 신경원 질환(루게릭병)",
+                        eng: "운동 기능 마비 환자를 위한 뇌-컴퓨터 인터페이스(BCI) 전극 삽입 및 신경 신호 디코딩 중심 영역"
+                    }
+                }
             },
             parietal: {
-                title: "Parietal Lobe (두정엽)",
-                desc: "촉각, 압력, 통증, 온도 등의 체성 감각을 처리하고, 공간 지각 능력과 시각적 형태를 인식하는 데 핵심적인 역할을 합니다.",
-                func: "공간 지각력, 수학적 계산, 체성 감각 처리",
-                pathology: "알츠하이머병 공간 지각 저하, 거스트만 증후군",
-                target: "비침습적 뇌파(EEG) 매핑 및 감각 피질 신경 조절"
+                name: "Parietal Lobe (두정엽)",
+                subs: {
+                    somatosensory: {
+                        title: "Primary Somatosensory Cortex (1차 체성감각 피질)",
+                        desc: "온몸의 피부와 근육에서 올라오는 촉각, 압각, 통증, 온도 감각 정보를 일차적으로 수신하여 대뇌가 인지할 수 있도록 부위별로 분할 처리하는 감각 수신부입니다.",
+                        func: "신체 부위별 촉각 해상도 분별, 체성 감각 호문쿨루스 매핑 구조 유지",
+                        disease: "감각 상실증, 통증 왜곡 증후군, 신체 왜곡 인지",
+                        eng: "체성감각 피질 자극을 통한 인공 의수/의족의 촉각 피드백 시스템(Haptic Feedback) 연동 연구"
+                    },
+                    angular: {
+                        title: "Angular Gyrus (각회)",
+                        desc: "두정엽 후하단에 위치하며 시각, 청각, 체성감각 정보를 고도로 연합하여 문자를 읽고 해석하거나 언어적 메타포를 이해하는 고위 연합 인지 공간입니다.",
+                        func: "문자 인지 및 해독, 시각적 단어를 청각적 코드로 변환, 수학적 추론",
+                        disease: "실독증(Dyslexia), 거스트만 증후군 (좌우 혼동, 계산 불능, 손가락 실인증)",
+                        eng: "인지 네트워크 정상화를 위한 다중 채널 신경망 동기화 상태 추적(fMRI 분석)"
+                    }
+                }
             },
             temporal: {
-                title: "Temporal Lobe (측두엽)",
-                desc: "청각 정보 처리 및 기억 형성에 관여하며, 특히 해마(Hippocampus)를 포함하고 있어 장기 기억과 감정 연합에 치명적으로 중요합니다.",
-                func: "청각 처리, 언어 이해 (베르니케 영역), 기억 형성",
-                pathology: "알츠하이머 치매(해마 손상), 측두엽 뇌전증(Epilepsy)",
-                target: "고분자 나노입자를 이용한 해마 타겟팅 BBB 통과 약물 전달"
+                name: "Temporal Lobe (측두엽)",
+                subs: {
+                    hippocampus: {
+                        title: "Hippocampus (해마)",
+                        desc: "측두엽 내부 깊숙이 위치한 내측 측두엽의 핵심 구조물로, 일시적으로 들어온 단기 기억을 영구적인 장기 기억으로 전환하고 통합하는 기억의 관문입니다.",
+                        func: "일화 기억(Episodic Memory) 형성, 공간 네비게이션 및 장소 세포 활성화",
+                        disease: "알츠하이머병(치매의 최초 발병지 및 위축 부위), 기억상실증",
+                        eng: "고분자 나노 캡슐을 표적화하여 혈뇌장벽(BBB)을 통과시킨 뒤 해마에 치료제를 유도하는 약물 전달 시스템(DDS)"
+                    },
+                    wernicke: {
+                        title: "Wernicke's Area (베르니케 영역)",
+                        desc: "우측 혹은 좌측 측두엽 상부 후방에 위치하며, 타인의 말이나 글의 의미를 정확하게 해석하고 이해하는 최고 수준의 감각성 언어 중추입니다.",
+                        func: "언어 청각 정보 기호화 및 문맥 이해, 논리적 의미 매핑",
+                        disease: "베르니케 실어증 (말은 유창하게 하나 의미가 없는 문장을 나열하고 알아듣지 못함)",
+                        eng: "정밀 언어 네트워크 추적을 위한 고해상도 확산텐서영상(DTI) 신경 섬유 추적 테크놀로지"
+                    }
+                }
             },
             occipital: {
-                title: "Occipital Lobe (후두엽)",
-                desc: "뇌의 뒷부분에 위치하며, 망막에서 들어오는 시각 정보를 수신하고 해석하는 시각 처리의 중심지입니다.",
-                func: "시각 정보 수신, 색상/형태/움직임 인식",
-                pathology: "피질맹(Cortical blindness), 시각 실인증",
-                target: "시각 피질 뇌-컴퓨터 인터페이스(BCI) 전극 삽입 및 자극"
-            },
-            cerebellum: {
-                title: "Cerebellum (소뇌)",
-                desc: "전체 뇌 부피의 10%에 불과하지만 뇌 신경세포의 절반 이상이 밀집해 있으며, 정밀한 운동 제어와 신체 균형을 담당합니다.",
-                func: "미세 운동 조절, 평형 감각 유지, 운동 학습",
-                pathology: "파킨슨병에 의한 보행 장애, 소뇌위축증",
-                target: "심부뇌자극술(DBS)을 통한 비정상적 운동 신호 차단"
-            },
-            brainstem: {
-                title: "Brainstem (뇌간)",
-                desc: "뇌와 척수를 연결하는 통로로, 호흡, 심장 박동, 혈압 조절 등 인간의 무의식적이고 기본적인 생명 유지 활동을 통제합니다.",
-                func: "자율 신경계 제어(호흡, 심박수), 수면-각성 주기 조절",
-                pathology: "루게릭병(ALS), 연수 마비, 수면 장애",
-                target: "약물 전달 캡슐의 중추신경계(CNS) 투과능력 평가"
+                name: "Occipital Lobe (후두엽)",
+                subs: {
+                    v1: {
+                        title: "Primary Visual Cortex (V1 / 1차 시각 피질)",
+                        desc: "눈의 망막과 외측슬상핵을 거쳐 들어온 기초 시각 신호를 최초로 받아들여, 사물의 선, 각도, 방향성 등 가장 원초적인 시각 특징을 추출해내는 기하학적 시각 센서입니다.",
+                        func: "망막 시각 공간의 기하학적 대뇌 매핑, 명암 및 윤곽선 분별 처리",
+                        disease: "피질맹(안구는 정상이나 뇌 손상으로 보지 못함), 암점 발생",
+                        eng: "시각 장애인을 위해 카메라 영상 신호를 V1 피질 전극 배열로 직접 뇌에 전기 자극을 가하는 인공 시각 BCI 프로젝트"
+                    }
+                }
             }
         };
 
-        // DOM 요소 가져오기
-        const parts = document.querySelectorAll('.brain-part');
-        const defaultState = document.getElementById('defaultState');
-        const activeState = document.getElementById('activeState');
-        
-        const infoTitle = document.getElementById('infoTitle');
-        const infoDesc = document.getElementById('infoDesc');
-        const infoFunction = document.getElementById('infoFunction');
-        const infoPathology = document.getElementById('infoPathology');
-        const infoTarget = document.getElementById('infoTarget');
+        // DOM 요소 바인딩
+        const majorBtns = document.querySelectorAll('.major-btn');
+        const svgParts = document.querySelectorAll('.brain-part');
+        const placeholder = document.getElementById('panelPlaceholder');
+        const subSection = document.getElementById('subRegionSection');
+        const subBtnGrid = document.getElementById('subBtnGrid');
+        const detailsSection = document.getElementById('detailsSection');
 
-        // 클릭 이벤트 등록
-        parts.forEach(part => {
+        // 상세 데이터 출력용 노드
+        const dataTitle = document.getElementById('dataTitle');
+        const dataDesc = document.getElementById('dataDesc');
+        const dataFunc = document.getElementById('dataFunc');
+        const dataDisease = document.getElementById('dataDisease');
+        const dataEng = document.getElementById('dataEng');
+
+        // 현재 선택된 대분류 세션 유지 변수
+        let currentMajorKey = null;
+
+        // 대분류 활성화 함수 (SVG 클릭 & 버튼 클릭 공통 제어)
+        function activateMajorRegion(regionKey) {
+            currentMajorKey = regionKey;
+
+            // 1. 모든 대분류 버튼 및 SVG 스타일 초기화
+            majorBtns.forEach(btn => btn.classList.remove('active'));
+            svgParts.forEach(part => part.classList.remove('active'));
+
+            // 2. 선택된 요소 스타일링 적용
+            const targetBtn = document.querySelector(`.major-btn[data-region="${regionKey}"]`);
+            if (targetBtn) targetBtn.classList.add('active');
+            
+            const targetSvg = document.getElementById(`geo-${regionKey}`);
+            if (targetSvg) targetSvg.classList.add('active');
+
+            // 3. 우측 데이터 패널 제어
+            placeholder.style.display = 'none';
+            detailsSection.style.display = 'none'; // 새 대분류 클릭 시 하위 상세정보는 일단 리셋
+            subSection.style.display = 'block';
+
+            // 4. 하위 세부 영역(Sub-regions) 버튼 동적 생성 파이프라인
+            subBtnGrid.innerHTML = ''; // 기존 세부버튼 제거
+            const targetData = structuralDatabase[regionKey];
+
+            Object.keys(targetData.subs).forEach(subKey => {
+                const subInfo = targetData.subs[subKey];
+                const btn = document.createElement('button');
+                btn.className = 'sub-btn';
+                btn.textContent = subInfo.title.split(' (')[0]; // 가독성을 위해 간략한 명칭만 버튼에 노출
+                btn.setAttribute('data-sub', subKey);
+                
+                // 세부 영역 버튼 클릭 이벤트 바인딩
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    showFinalDetails(regionKey, subKey);
+                });
+
+                subBtnGrid.appendChild(btn);
+            });
+        }
+
+        // 최종 상세 학술 데이터를 우측 하단에 렌더링하는 함수
+        function showFinalDetails(majorKey, subKey) {
+            const finalData = structuralDatabase[majorKey].subs[subKey];
+            
+            if(finalData) {
+                detailsSection.style.display = 'block';
+                dataTitle.textContent = finalData.title;
+                dataDesc.textContent = finalData.desc;
+                dataFunc.textContent = finalData.func;
+                dataDisease.textContent = finalData.disease;
+                dataEng.textContent = finalData.eng;
+            }
+        }
+
+        // [이벤트 연동 1] 우측 대분류 리스트 버튼 클릭 시
+        majorBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const regionKey = this.getAttribute('data-region');
+                activateMajorRegion(regionKey);
+            });
+        });
+
+        // [이벤트 연동 2] 좌측 뇌 SVG 일러스트 도형 클릭 시
+        svgParts.forEach(part => {
             part.addEventListener('click', function() {
-                // 기존 활성화된 부위 초기화
-                parts.forEach(p => p.classList.remove('active'));
-                
-                // 클릭된 부위 활성화
-                this.classList.add('active');
-                
-                // 데이터 가져오기 (svg path의 id를 key로 사용)
-                const id = this.getAttribute('id');
-                const data = brainData[id];
-
-                // 패널 화면 전환 및 데이터 삽입
-                if(data) {
-                    defaultState.style.display = 'none';
-                    activeState.style.display = 'block';
-                    
-                    infoTitle.textContent = data.title;
-                    infoDesc.textContent = data.desc;
-                    infoFunction.textContent = data.func;
-                    infoPathology.textContent = data.pathology;
-                    infoTarget.textContent = data.target;
-                }
+                const regionKey = this.getAttribute('id').replace('geo-', '');
+                activateMajorRegion(regionKey);
             });
         });
     </script>
