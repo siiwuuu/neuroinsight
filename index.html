@@ -16,12 +16,12 @@
             color: #1e293b;
         }
 
-        /* --- 상단 네비게이션 바 --- */
+        /* --- 상단 네비게이션 바 [수정] --- */
         .navbar {
             background-color: #0f172a;
             padding: 25px 60px;
             display: flex;
-            justify-content: flex-end; /* 우측 정렬 유지 */
+            justify-content: space-between; /* [수정] 양쪽 끝 정렬로 변경 */
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -30,11 +30,23 @@
             align-items: center; /* 세로 중앙 정렬 */
         }
 
-        /* [추가] 왼쪽 상단 프로필 영역 */
+        /* [추가] 좌측 정렬 그룹 (프로필 + 로그인 버튼) */
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* [추가] 우측 정렬 그룹 (나머지 메뉴들) */
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        /* [수정] 왼쪽 상단 프로필 영역 */
         .user-profile {
             display: none; 
             align-items: center;
-            margin-right: auto; /* 프로필과 로그인 버튼 묶음을 왼쪽 끝으로 보냄 */
             gap: 12px;
         }
         .user-profile img {
@@ -51,7 +63,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* [수정] 로그인 버튼이 맨 왼쪽에 올 때 프로필과의 간격을 위해 좌측 마진 조정 */
+        /* [유지] 메뉴 스타일 */
         .navbar a {
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
@@ -67,18 +79,17 @@
             color: #ffffff; 
         }
 
-        /* [수정] 로그인 버튼 강조 스타일 및 위치 배치 */
+        /* [수정] 좌측 그룹에 속한 로그인 버튼은 마진을 초기화하여 깔끔하게 배치 */
+        .nav-left #authBtn {
+            margin-left: 0;
+        }
+
+        /* 로그인 버튼 강조 스타일 */
         #authBtn {
             color: #3b82f6;
             border: 1px solid #3b82f6;
             padding: 5px 12px;
             border-radius: 4px;
-            margin-left: 20px; /* 초기 상태 마진 */
-        }
-        
-        /* [추가] 프로필이 활성화되었을 때 로그인 버튼과의 간격 균형을 맞추기 위한 CSS */
-        .user-profile:not([style*="display: none"]) + #authBtn {
-            margin-left: 15px;
         }
 
         /* --- [유지] 메인 헤더 및 섹션 스타일 --- */
@@ -194,12 +205,17 @@
             .navbar {
                 justify-content: center;
                 padding: 15px 20px;
+                flex-direction: column; /* 모바일에서는 세로 정렬 */
+                gap: 15px;
             }
-            .user-profile {
-                margin-bottom: 15px;
-                width: 100%;
+            .nav-left {
                 justify-content: center;
-                margin-right: 0; /* 모바일 관점 중앙정렬을 위해 리셋 */
+                width: 100%;
+            }
+            .nav-right {
+                justify-content: center;
+                width: 100%;
+                flex-wrap: wrap;
             }
             .navbar a {
                 margin: 5px 10px;
@@ -230,18 +246,22 @@
 <body>
 
     <nav class="navbar">
-        <div class="user-profile" id="userProfile">
-            <img id="userPhoto" src="" alt="Profile">
-            <span id="userNameDisplay"></span>
+        <div class="nav-left">
+            <div class="user-profile" id="userProfile">
+                <img id="userPhoto" src="" alt="Profile">
+                <span id="userNameDisplay"></span>
+            </div>
+            <a href="login.html" id="authBtn">Login</a>
         </div>
-        <a href="login.html" id="authBtn">Login</a>
 
-        <a href="index.html">Home</a>
-        <a href="brain.html">Brain Map</a>
-        <a href="archive.html">Brain Archive</a> 
-        <a href="disease.html">Disorder</a>
-        <a href="bbb.html">BBB</a>
-        <a href="treatment.html">Treatment</a>
+        <div class="nav-right">
+            <a href="index.html">Home</a>
+            <a href="brain.html">Brain Map</a>
+            <a href="archive.html">Brain Archive</a> 
+            <a href="disease.html">Disorder</a>
+            <a href="bbb.html">BBB</a>
+            <a href="treatment.html">Treatment</a>
+        </div>
     </nav>
 
     <div class="header">
