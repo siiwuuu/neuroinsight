@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 글로벌 디자인 시스템 (기존 유지) --- */
+        /* --- 글로벌 디자인 시스템 --- */
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             margin: 0;
@@ -18,7 +18,7 @@
             letter-spacing: -0.2px;
         }
 
-        /* --- 상단 네비게이션 바 (드롭다운 기능 추가 및 기존 디자인 감성 유지) --- */
+        /* --- 상단 네비게이션 바 --- */
         .navbar {
             background-color: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
@@ -42,24 +42,31 @@
         .logo {
             font-size: 16px;
             font-weight: 800;
-            color: #070b19; /* 깊어진 시그니처 네이비 */
+            color: #070b19;
             text-decoration: none;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
+        /* 프로필 클릭 시 마이페이지로 이동하기 편하도록 커서와 반응 효과 추가 */
         .user-profile {
             display: none; 
             align-items: center;
             gap: 10px;
             border-left: 1px solid #cbd5e1;
             padding-left: 16px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        .user-profile:hover {
+            opacity: 0.8;
         }
         .user-profile img {
             width: 28px;
             height: 28px;
             border-radius: 50%;
             object-fit: cover;
+            border: 1px solid #e2e8f0;
         }
         .user-profile span {
             color: #475569;
@@ -70,10 +77,9 @@
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 8px; /* 드롭다운 패딩값 고려 유동적 간격 미세 조정 */
+            gap: 8px;
         }
 
-        /* 네비게이션 기본 링크 및 드롭다운 버튼 공통 양식 */
         .navbar a:not(.logo):not(#authBtn), .dropbtn {
             color: #475569;
             text-decoration: none;
@@ -96,7 +102,7 @@
             background-color: #f1f5f9;
         }
 
-        /* 드롭다운 코어 구조 스타일 */
+        /* 드롭다운 구조 */
         .dropdown {
             position: relative;
             display: inline-block;
@@ -173,7 +179,7 @@
             color: white;
         }
 
-        /* --- 히어로 섹션 (기존 유지) --- */
+        /* --- 히어로 섹션 --- */
         .hero {
             background: linear-gradient(180deg, #070b19 0%, #020617 100%);
             color: white;
@@ -229,7 +235,7 @@
             line-height: 1.6;
         }
 
-        /* --- 레이아웃 컨테이너 (기존 유지) --- */
+        /* --- 레이아웃 컨테이너 --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -252,7 +258,7 @@
             word-break: keep-all;
         }
 
-        /* --- 2열 그리드 정보 섹션 (기존 유지) --- */
+        /* --- 2열 그리드 정보 섹션 --- */
         .grid-intro {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -283,7 +289,7 @@
             word-break: keep-all;
         }
 
-        /* --- 학술 프레임워크 그리드 카드 (기존 유지) --- */
+        /* --- 학술 프레임워크 그리드 카드 --- */
         .process-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -384,7 +390,7 @@
             opacity: 1;
         }
 
-        /* --- 고급 연구포털 느낌의 푸터 (기존 유지) --- */
+        /* --- 푸터 --- */
         footer {
             background-color: #020617;
             color: #64748b;
@@ -400,36 +406,18 @@
             align-items: center;
         }
 
-        /* --- 완벽한 반응형 뷰포트 (기존 유지) --- */
+        /* --- 반응형 뷰포트 --- */
         @media (max-width: 1100px) {
-            .process-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .grid-intro {
-                grid-template-columns: 1fr;
-            }
+            .process-grid { grid-template-columns: repeat(2, 1fr); }
+            .grid-intro { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
-            .navbar {
-                padding: 16px 24px;
-                flex-direction: column;
-                gap: 16px;
-            }
-            .nav-right {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 20px;
-            }
-            .hero {
-                padding: 90px 24px;
-            }
-            .hero h1 {
-                font-size: 36px;
-            }
-            .process-grid {
-                grid-template-columns: 1fr;
-            }
+            .navbar { padding: 16px 24px; flex-direction: column; gap: 16px; }
+            .nav-right { flex-wrap: wrap; justify-content: center; gap: 20px; }
+            .hero { padding: 90px 24px; }
+            .hero h1 { font-size: 36px; }
+            .process-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -587,10 +575,17 @@
             const authBtn = document.getElementById('authBtn');
 
             if (user) {
+                // 1. 로그인 상태일 때 프로필 영역 노출 및 데이터 매핑
                 userProfile.style.display = "flex";
                 userNameDisplay.textContent = user.displayName || "Researcher";
                 userPhoto.src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
+                // [추가된 핵심 기능] 프로필을 누르면 마이페이지(mypage.html)로 이동하는 로직 바인딩
+                userProfile.onclick = () => {
+                    window.location.href = "mypage.html";
+                };
+
+                // 오른쪽 끝 버튼은 안전하게 로그아웃 역할을 하도록 매핑 유지
                 authBtn.textContent = "Logout";
                 authBtn.href = "#";
                 authBtn.onclick = (e) => {
@@ -601,7 +596,10 @@
                     });
                 };
             } else {
+                // 2. 로그아웃(비로그인) 상태일 때 초기화
                 userProfile.style.display = "none";
+                userProfile.onclick = null; // 클릭 이벤트 제거
+                
                 authBtn.textContent = "Login";
                 authBtn.href = "login.html";
                 authBtn.onclick = null;
