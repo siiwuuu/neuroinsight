@@ -1,125 +1,521 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detailed Brain Map - NeuroInsight</title>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <title>Neuro Insight - Brain Mapping & Anatomy Database</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: 'Libre Baskerville', serif; margin: 0; background-color: #f8fafc; color: #1e293b; }
-
-        /* 네비게이션 바 (로그인 버튼 왼쪽 배치 버전) */
-        .navbar { background-color: #000b1a; padding: 25px 60px; display: flex; justify-content: flex-end; align-items: center; }
-        .navbar a { color: rgba(255, 255, 255, 0.7); text-decoration: none; margin-left: 30px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s; }
-        .navbar a:hover { color: #fff; }
-        .login-btn { margin-left: 0 !important; margin-right: auto; color: #94a3b8 !important; border: 1px solid rgba(148, 163, 184, 0.3); padding: 6px 15px; border-radius: 6px; font-size: 12px !important; }
-
-        .main-content { display: flex; max-width: 1200px; margin: 60px auto; gap: 40px; padding: 0 20px; align-items: stretch; }
-
-        /* 뇌 시각화 영역 */
-        .brain-viz { flex: 1.2; background: white; padding: 50px; border-radius: 30px; box-shadow: 0 15px 50px rgba(0,0,0,0.05); text-align: center; position: relative; }
-
-        /* 뇌 파트 스타일 */
-        .brain-part { 
-            fill: #e2e8f0; 
-            stroke: #94a3b8; 
-            stroke-width: 0.8; 
-            cursor: pointer; 
-            transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
-            filter: url(#dropShadow); /* 그림자 필터 적용 */
+        /* --- 글로벌 디자인 시스템 (홈화면과 완벽 연동) --- */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            background-color: #ffffff;
+            color: #0f172a;
+            line-height: 1.7;
+            letter-spacing: -0.2px;
         }
-        .brain-part:hover { fill: #cbd5e1; transform: scale(1.02); }
-        .brain-part.active { fill: #475569; stroke: #0f172a; }
 
-        /* 뇌 주름(Sulci) 스타일 - 클릭 방해 안 되게 설정 */
-        .sulci { fill: none; stroke: rgba(0, 0, 0, 0.15); stroke-width: 0.5; pointer-events: none; }
+        /* --- 상단 네비게이션 바 (글래스모피즘) --- */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 16px 60px;
+            display: flex;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #e2e8f0;
+            align-items: center;
+        }
 
-        /* 정보 패널 */
-        .info-panel { flex: 0.8; background: #000b1a; color: white; padding: 45px; border-radius: 30px; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
-        .info-panel h2 { font-size: 34px; margin-bottom: 20px; color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
-        .info-panel p { font-size: 18px; line-height: 1.8; color: #cbd5e1; }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
 
-        .instruction { margin-top: 30px; font-size: 14px; color: #94a3b8; font-style: italic; }
+        .logo {
+            font-size: 16px;
+            font-weight: 800;
+            color: #070b19;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-        @media (max-width: 900px) {
-            .main-content { flex-direction: column; }
-            .navbar { padding: 20px; justify-content: center; }
-            .login-btn { margin-right: 15px; }
+        .user-profile {
+            display: none; 
+            align-items: center;
+            gap: 10px;
+            border-left: 1px solid #cbd5e1;
+            padding-left: 16px;
+        }
+        .user-profile img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .user-profile span {
+            color: #475569;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .navbar a:not(.logo):not(#authBtn) {
+            color: #475569;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .navbar a:not(.logo):not(#authBtn):hover {
+            color: #2563eb; 
+        }
+
+        /* 현재 활성화된 페이지 표시 */
+        .navbar a.active {
+            color: #2563eb;
+        }
+
+        #authBtn {
+            color: #2563eb;
+            border: 1px solid #d9e6ff;
+            background-color: #f0f5ff;
+            padding: 7px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        #authBtn:hover {
+            background-color: #2563eb;
+            border-color: #2563eb;
+            color: white;
+        }
+
+        /* --- 히어로 섹션 (일관된 울트라 딥 네이비 + 격자 디테일) --- */
+        .hero {
+            background: linear-gradient(180deg, #070b19 0%, #020617 100%);
+            color: white;
+            padding: 120px 60px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        .hero-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background-color: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #60a5fa;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 46px;
+            font-weight: 800;
+            margin: 0 0 20px 0;
+            letter-spacing: -1.2px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #94a3b8;
+            margin: 0;
+            max-width: 760px;
+            font-weight: 400;
+        }
+
+        /* --- 레이아웃 컨테이너 --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #020617;
+            margin-bottom: 14px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-desc {
+            font-size: 16px;
+            color: #64748b;
+            max-width: 840px;
+            margin-bottom: 48px;
+            word-break: keep-all;
+        }
+
+        /* --- [Brain Map 전용 UI] 3열 아틀라스 데이터 그리드 --- */
+        .atlas-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .atlas-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .atlas-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .atlas-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #020617;
+            margin: 0 0 12px 0;
+        }
+
+        .atlas-card p {
+            font-size: 14px;
+            color: #475569;
+            margin: 0 0 20px 0;
+            min-height: 72px;
+            word-break: keep-all;
+        }
+
+        /* 데이터 스펙 표시용 디자인 리스트 */
+        .spec-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border-top: 1px dashed #e2e8f0;
+            padding-top: 16px;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .spec-label {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .spec-value {
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        /* --- [Brain Map 전용 UI] 연구용 데이터 아카이브 테이블 --- */
+        .data-table-container {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 40px;
+        }
+
+        .table-header {
+            background-color: #f8fafc;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 700;
+            color: #020617;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            padding: 14px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 16px 24px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        /* --- 푸터 스타일 --- */
+        footer {
+            background-color: #020617;
+            color: #64748b;
+            padding: 50px 60px;
+            font-size: 13px;
+            border-top: 1px solid #1e293b;
+            margin-top: 60px;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* --- 반응형 뷰포트 --- */
+        @media (max-width: 1024px) {
+            .atlas-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 16px 24px;
+                flex-direction: column;
+                gap: 16px;
+            }
+            .nav-right {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 20px;
+            }
+            .hero {
+                padding: 80px 24px;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+            .atlas-grid {
+                grid-template-columns: 1fr;
+            }
+            .data-table-container {
+                overflow-x: auto;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <nav class="navbar">
-        <a href="login.html" class="login-btn">Login</a>
-        <a href="index.html">Home</a>
-        <a href="brain.html">Brain Map</a>
-        <a href="archive.html">Brain Archive</a>
-        <a href="disease.html">Disorder</a>
-        <a href="bbb.html">BBB</a>
-        <a href="treatment.html">Treatment</a>
-    </nav>
-
-    <div class="main-content">
-        <div class="brain-viz">
-            <h3 style="margin-bottom: 40px; color: #0f172a; letter-spacing: 1px;">Detailed Neuroanatomy</h3>
-            
-            <svg viewBox="0 0 400 350" width="100%" id="brain-svg">
-                <defs>
-                    <filter id="dropShadow" x="-20%" y="-20%" width="150%" height="150%">
-                        <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
-                        <feOffset dx="2" dy="4" result="offsetblur" />
-                        <feComponentTransfer><feFuncA type="linear" slope="0.2"/></feComponentTransfer>
-                        <feMerge> <feMergeNode/> <feMergeNode in="SourceGraphic"/> </feMerge>
-                    </filter>
-                    <radialGradient id="partGrad" cx="50%" cy="40%" r="70%">
-                        <stop offset="0%" style="stop-color:rgba(255,255,255,0.3)" />
-                        <stop offset="100%" style="stop-color:rgba(0,0,0,0.05)" />
-                    </radialGradient>
-                </defs>
-
-                <path class="brain-part" id="frontal" d="M110,80 C110,40 220,35 300,90 L300,170 C220,175 110,180 110,150 Z" onclick="showInfo('Frontal Lobe')" />
-                <path class="brain-part" id="parietal" d="M305,90 C360,95 390,130 390,190 L305,190 Z" onclick="showInfo('Parietal Lobe')" />
-                <path class="brain-part" id="temporal" d="M130,185 C130,185 285,185 285,185 C285,250 200,280 130,240 Z" onclick="showInfo('Temporal Lobe')" />
-                <path class="brain-part" id="occipital" d="M305,195 L390,195 C370,260 330,260 305,195 Z" onclick="showInfo('Occipital Lobe')" />
-                <path class="brain-part" id="cerebellum" d="M280,255 C330,255 360,280 340,310 C290,320 270,300 270,270 Z" onclick="showInfo('Cerebellum')" />
-
-                <g class="sulci">
-                    <path d="M150,90 Q180,120 160,150" />
-                    <path d="M220,70 Q240,110 210,160" />
-                    <path d="M300,90 L300,170" /> <path d="M330,120 Q360,140 340,170" />
-                    <path d="M160,205 Q220,220 270,205" /> <path d="M290,265 L320,280" /> </g>
-            </svg>
-            
-            <p class="instruction">각 영역의 주름진 표면을 클릭하여 세부 기능을 탐구하세요.</p>
+        <div class="nav-left">
+            <a href="index.html" class="logo">NeuroInsight</a>
+            <div class="user-profile" id="userProfile">
+                <img id="userPhoto" src="" alt="Profile">
+                <span id="userNameDisplay"></span>
+            </div>
         </div>
 
-        <div class="info-panel" id="info-panel">
-            <h2 id="region-name">Select a Region</h2>
-            <p id="region-desc">학술적으로 정의된 각 대뇌 피질의 영역을 선택하십시오. 해당 영역의 고위 인지 기능과 신경학적 특성이 여기에 표시됩니다.</p>
+        <div class="nav-right">
+            <a href="index.html">Home</a>
+            <a href="brain.html" class="active">Brain Map</a>
+            <a href="archive.html">Brain Archive</a> 
+            <a href="disease.html">Disorder</a>
+            <a href="bbb.html">BBB</a>
+            <a href="treatment.html">Treatment</a>
+            <a href="login.html" id="authBtn">Login</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-inner">
+            <div class="hero-badge">STAGE 01 // Neuroanatomy Mapping</div>
+            <h1>Structural Brain Atlas</h1>
+            <p>인간 대뇌 피질의 구조적 매핑 데이터를 탐색하고, 신경망 시스템의 공간적 아키텍처를 분석합니다.</p>
         </div>
     </div>
 
-    <script>
-        const brainData = {
-            'Frontal Lobe': '전두엽은 고위 인지 기능의 중추로, 의사결정, 계획 수립, 사회적 행동 억제 및 수의적 운동 조절(Primary Motor Cortex)을 담당합니다.',
-            'Parietal Lobe': '두정엽은 체감각 정보를 통합하며, 공간 인지 능력과 수리적 사고, 그리고 물체 간의 거리를 파악하는 시공간적 프로세싱을 수행합니다.',
-            'Temporal Lobe': '측두엽은 일차 청각 피질을 포함하며, 언어의 이해(Wernicke 영역) 및 해마와 연계된 장기 기억의 저장과 회상에 필수적입니다.',
-            'Occipital Lobe': '후두엽은 망막에서 전달된 시각 신호를 처리하는 일차 시각 피질(V1)이 위치한 곳으로, 형체, 색상, 운동 상태 등의 시각 정보를 해석합니다.',
-            'Cerebellum': '소뇌는 운동의 정밀도를 조절하고 평형을 유지합니다. 최근 연구에 따르면 단순 운동 제어를 넘어 인지적 유연성과 학습 능력에도 관여함이 밝혀졌습니다.'
+    <div class="container">
+        <h2 class="section-title">Cortical Region Mapping</h2>
+        <p class="section-desc">뇌의 해부학적 위치에 따른 기능 분석 데이터입니다. 각 영역의 고유 생물학적 메커니즘은 차세대 융합 공학(나노물질 타겟팅 및 전기자극 파라미터 설계)의 기초 정량 지표로 활용됩니다.</p>
+
+        <div class="atlas-grid">
+            <div class="atlas-card">
+                <h3>Frontal Lobe</h3>
+                <p>의사결정, 계획 수립, 운동 제어 및 고차원 인지 기능을 담당하는 핵심 영역입니다.</p>
+                <ul class="spec-list">
+                    <li class="spec-item"><span class="spec-label">주요 기능</span><span class="spec-value">인지·모터 제어</span></li>
+                    <li class="spec-item"><span class="spec-label">자극 타겟</span><span class="spec-value">DLPFC 영역</span></li>
+                </ul>
+            </div>
+
+            <div class="atlas-card">
+                <h3>Parietal Lobe</h3>
+                <p>체감각 정보(통각, 촉각 등)의 통합 및 공간적 정위 감각을 물리적으로 처리합니다.</p>
+                <ul class="spec-list">
+                    <li class="spec-item"><span class="spec-label">주요 기능</span><span class="spec-value">감각 정보 통합</span></li>
+                    <li class="spec-item"><span class="spec-label">자극 타겟</span><span class="spec-value">체감각 피질</span></li>
+                </ul>
+            </div>
+
+            <div class="atlas-card">
+                <h3>Temporal Lobe</h3>
+                <p>청각 정보 처리, 언어 이해(Wernicke 영역) 및 장기 기억 형성을 담당합니다.</p>
+                <ul class="spec-list">
+                    <li class="spec-item"><span class="spec-label">주요 기능</span><span class="spec-value">청각 및 기억</span></li>
+                    <li class="spec-item"><span class="spec-label">자극 타겟</span><span class="spec-value">해마 인근 영역</span></li>
+                </ul>
+            </div>
+
+            <div class="atlas-card">
+                <h3>Occipital Lobe</h3>
+                <p>망막으로부터 전달되는 시각적 자극 신호를 인지하고 처리하는 시각 피질이 위치합니다.</p>
+                <ul class="spec-list">
+                    <li class="spec-item"><span class="spec-label">주요 기능</span><span class="spec-value">시각 패턴 인지</span></li>
+                    <li class="spec-item"><span class="spec-label">자극 타겟</span><span class="spec-value">V1 시각 피질</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="data-table-container">
+            <div class="table-header">Anatomical Coordination & Mapping Index</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Region ID</th>
+                        <th>Anatomical Name</th>
+                        <th>Brodmann Area (BA)</th>
+                        <th>Signal Type</th>
+                        <th>Mapping Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight: 600; color: #2563eb;">REG-001</td>
+                        <td>Dorsolateral Prefrontal Cortex</td>
+                        <td>BA 9 / BA 46</td>
+                        <td>High Cognitive Executive</td>
+                        <td><span class="status-badge">Mapped</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 600; color: #2563eb;">REG-002</td>
+                        <td>Primary Somatosensory Cortex</td>
+                        <td>BA 1 / BA 2 / BA 3</td>
+                        <td>Somatosensory Input</td>
+                        <td><span class="status-badge">Mapped</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 600; color: #2563eb;">REG-003</td>
+                        <td>Primary Visual Cortex (V1)</td>
+                        <td>BA 17</td>
+                        <td>Visual Afferent</td>
+                        <td><span class="status-badge">Mapped</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-inner">
+            <div>© 2026 NeuroInsight Center for Bio-Convergence Engineering. All Rights Reserved.</div>
+            <div style="font-weight: 600; color: #475569;">Academic Open Data Platform</div>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA8UUSVJ9gX0JdC04ke6FpEV5yix9FR3Is",
+            authDomain: "neuroinsight-9a401.firebaseapp.com",
+            projectId: "neuroinsight-9a401",
+            storageBucket: "neuroinsight-9a401.firebasestorage.app",
+            messagingSenderId: "273812619662",
+            appId: "1:273812619662:web:1427bcc820350c97ca24df",
+            measurementId: "G-L8F2G12TM9"
         };
 
-        function showInfo(name) {
-            const nameEl = document.getElementById('region-name');
-            const descEl = document.getElementById('region-desc');
-            nameEl.innerText = name;
-            descEl.innerText = brainData[name];
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-            document.querySelectorAll('.brain-part').forEach(part => part.classList.remove('active'));
-            if (event && event.target) {
-                event.target.classList.add('active');
+        onAuthStateChanged(auth, (user) => {
+            const userProfile = document.getElementById('userProfile');
+            const userPhoto = document.getElementById('userPhoto');
+            const userNameDisplay = document.getElementById('userNameDisplay');
+            const authBtn = document.getElementById('authBtn');
+
+            if (user) {
+                userProfile.style.display = "flex";
+                userNameDisplay.textContent = user.displayName || "Researcher";
+                userPhoto.src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+
+                authBtn.textContent = "Logout";
+                authBtn.href = "#";
+                authBtn.onclick = (e) => {
+                    e.preventDefault();
+                    signOut(auth).then(() => {
+                        alert("로그아웃 되었습니다.");
+                        location.reload();
+                    });
+                };
+            } else {
+                userProfile.style.display = "none";
+                authBtn.textContent = "Login";
+                authBtn.href = "login.html";
+                authBtn.onclick = null;
             }
-        }
+        });
     </script>
 </body>
 </html>
