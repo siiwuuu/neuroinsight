@@ -179,7 +179,7 @@
         </div>
     </div>
 
-    <script type="module">
+      <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
@@ -202,7 +202,7 @@
                 document.getElementById("userName").textContent = user.displayName || "익명 연구원";
                 document.getElementById("userEmail").textContent = user.email;
                 
-                // [수정 핵심] 로컬 브라우저에 저장해 둔 사진 정보가 있다면 우선적으로 불러옵니다.
+                // 로컬 브라우저에 압축 저장해 둔 사진이 있다면 우선적으로 불러옵니다.
                 const localPic = localStorage.getItem("myProfileImg");
                 if (localPic) {
                     document.getElementById("profileImg").src = localPic;
@@ -216,20 +216,34 @@
             }
         });
 
-        // 프로필 사진 변경 로직 (로컬 스토리지 연동 추가)
+        // 프로필 사진 변경 및 초경량 압축 저장 로직
         document.getElementById("fileInput").addEventListener("change", (e) => {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
-                    const imgData = event.target.result;
-                    
-                    // 1. 현재 화면 이미지 변경
-                    document.getElementById("profileImg").src = imgData;
-                    
-                    // 2. [수정 핵심] 홈 화면(index.html)에서도 이 이미지를 가져다 쓸 수 있도록 브라우저에 임시 저장합니다.
-                    localStorage.setItem("myProfileImg", imgData);
-                    alert("프로필 사진이 성공적으로 업데이트되었습니다.");
+                    const img = new Image();
+                    img.onload = function() {
+                        // 캔버스(Canvas) 기능을 이용해 이미지를 150x150 사이즈로 강제 압축합니다.
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        
+                        canvas.width = 150;
+                        canvas.height = 150;
+                        
+                        // 이미지를 정가운데에 맞춰 이쁘게 그려줍니다.
+                        ctx.drawImage(img, 0, 0, 150, 150);
+                        
+                        // 용량을 대폭 줄인 압축 Base64 데이터 추출 (용량이 몇 KB 수준으로 줄어듦)
+                        const compressedData = canvas.toDataURL('image/jpeg', 0.7);
+                        
+                        // 화면 이미지 변경 및 로컬 스토리지 보관
+                        document.getElementById("profileImg").src = compressedData;
+                        localStorage.setItem("myProfileImg", compressedData);
+                        
+                        alert("프로필 사진이 성공적으로 업데이트되었습니다!");
+                    };
+                    img.src = event.target.result;
                 };
                 reader.readAsDataURL(file);
             }
@@ -237,7 +251,6 @@
 
         // 로그아웃 시스템 작동
         document.getElementById("logoutBtn").addEventListener("click", () => {
-            // [수정 핵심] 로그아웃할 때 브라우저에 저장되어 있던 프로필 사진 데이터 캐시도 함께 지워줍니다.
             localStorage.removeItem("myProfileImg");
             signOut(auth).then(() => {
                 alert("연구 세션이 종료되었습니다.");
