@@ -4,43 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neuro Insight - Authentication</title>
+    <title>Sign Up - Neuro Insight</title>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 홈화면(index.html) 톤앤매너 완벽 동기화 --- */
+        /* --- 기본 스타일 (index.html과 동일) --- */
         body {
             font-family: 'Libre Baskerville', serif;
             margin: 0;
-            background-color: #0f172a; /* 홈화면 헤더와 같은 고급스러운 어두운 배경 */
-            color: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            background-color: #f8fafc; /* 약간의 회색빛이 도는 깔끔한 배경 */
+            color: #1e293b;
         }
 
-        /* --- 상단 네비게이션 바 (index.html과 동일 스타일 유지) --- */
+        /* --- 상단 네비게이션 바 (index.html과 완벽히 동일) --- */
         .navbar {
             background-color: #0f172a;
             padding: 25px 60px;
             display: flex;
             justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             flex-wrap: wrap;
             align-items: center;
         }
-
         .nav-left {
             display: flex;
             align-items: center;
             gap: 20px;
         }
-
         .nav-right {
             display: flex;
             align-items: center;
         }
-
         .navbar a {
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
@@ -51,129 +48,116 @@
             text-transform: uppercase;
             letter-spacing: 1.2px;
         }
-
         .navbar a:hover {
             color: #ffffff; 
         }
 
-        #authBtn {
-            color: #3b82f6;
-            border: 1px solid #3b82f6;
-            padding: 5px 12px;
-            border-radius: 4px;
-            margin-left: 0;
-        }
-
-        /* --- 로그인 / 회원가입 인증 카드 섹션 --- */
-        .auth-container {
-            flex: 1;
+        /* --- 인증(회원가입) 컨테이너 전용 스타일 --- */
+        .auth-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: calc(100vh - 85px); /* 네비게이션 높이 제외 */
             padding: 40px 20px;
         }
 
-        .auth-card {
-            background-color: #1e293b; /* 딥 네이비 카드 바디 */
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
+        .auth-container {
+            background: white;
             padding: 50px 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* 부드러운 그림자 */
             width: 100%;
             max-width: 400px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            border: 1px solid #e2e8f0;
             text-align: center;
         }
 
-        .auth-card h2 {
+        .auth-container h2 {
             font-size: 28px;
-            font-weight: 700;
+            margin-top: 0;
             margin-bottom: 10px;
-            letter-spacing: -0.5px;
-        }
-
-        .auth-card p {
-            color: #94a3b8;
-            font-size: 14px;
-            font-style: italic;
-            margin-bottom: 35px;
-        }
-
-        /* 입력 폼 스타일 */
-        .input-group {
-            text-align: left;
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #94a3b8;
-            margin-bottom: 8px;
             font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #0f172a;
         }
 
-        .input-group input {
-            width: 100%;
-            box-sizing: border-box;
-            background-color: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 6px;
-            padding: 12px 16px;
-            color: white;
-            font-family: inherit;
+        .auth-container p {
             font-size: 14px;
-            transition: 0.3s;
+            color: #64748b;
+            margin-bottom: 35px;
+            font-style: italic;
         }
 
-        .input-group input:focus {
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-family: sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #475569;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
             outline: none;
             border-color: #3b82f6;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
-        /* 버튼 스타일 */
-        .submit-btn {
+        .btn-submit {
             width: 100%;
+            padding: 14px;
             background-color: #3b82f6;
             color: white;
             border: none;
-            border-radius: 6px;
-            padding: 14px;
-            font-size: 14px;
+            border-radius: 4px;
+            font-size: 15px;
             font-weight: 700;
-            font-family: inherit;
             cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            transition: background-color 0.3s;
+            font-family: inherit;
             margin-top: 10px;
         }
 
-        .submit-btn:hover {
+        .btn-submit:hover {
             background-color: #2563eb;
         }
 
-        /* 하단 토글 링크 */
-        .switch-mode {
+        .auth-footer {
             margin-top: 25px;
-            font-size: 13px;
-            color: #94a3b8;
+            font-size: 14px;
+            color: #64748b;
+            font-family: sans-serif;
         }
 
-        .switch-mode a {
+        .auth-footer a {
             color: #3b82f6;
             text-decoration: none;
-            font-weight: 700;
-            margin-left: 5px;
+            font-weight: bold;
         }
 
-        .switch-mode a:hover {
+        .auth-footer a:hover {
             text-decoration: underline;
         }
 
-        /* --- 반응형 디자인 --- */
+        /* --- 반응형 --- */
         @media (max-width: 900px) {
             .navbar {
                 justify-content: center;
@@ -184,13 +168,11 @@
             .nav-left, .nav-right {
                 justify-content: center;
                 width: 100%;
+                flex-wrap: wrap;
             }
             .navbar a {
                 margin: 5px 10px;
                 font-size: 11px;
-            }
-            .auth-card {
-                padding: 40px 25px;
             }
         }
     </style>
@@ -200,8 +182,9 @@
 
     <nav class="navbar">
         <div class="nav-left">
-            <a href="login.html" id="authBtn">Login</a>
+            <a href="index.html" style="margin-left: 0; font-size: 16px;">NeuroInsight</a>
         </div>
+
         <div class="nav-right">
             <a href="index.html">Home</a>
             <a href="brain.html">Brain Map</a>
@@ -212,37 +195,39 @@
         </div>
     </nav>
 
-    <div class="auth-container">
-        <div class="auth-card">
-            <h2 id="formTitle">Sign In</h2>
-            <p id="formSubTitle">Access the NeuroInsight research platform</p>
+    <div class="auth-wrapper">
+        <div class="auth-container">
+            <h2>Join Us</h2>
+            <p>Create an account to access advanced therapeutics research.</p>
 
-            <form id="authForm">
-                <div class="input-group">
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="researcher@university.edu" required>
+                    <input type="email" id="email" placeholder="researcher@neuro.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Min. 6 characters" required>
                 </div>
                 
-                <div class="input-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="••••••••" required>
-                </div>
-
-                <button type="submit" class="submit-btn" id="submitBtn">Sign In</button>
+                <button type="submit" class="btn-submit">Sign Up</button>
             </form>
 
-            <div class="switch-mode">
-                <span id="switchText">New to NeuroInsight?</span>
-                <a href="#" id="switchBtn">Create an account</a>
+            <div class="auth-footer">
+                Already have an account? <a href="login.html">Log in here</a>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
-        // 본인의 Firebase Config 정보를 입력하세요 (기존 정보 동일 적용 가능)
+        // 기존에 사용하시던 설정값 그대로 적용
         const firebaseConfig = {
             apiKey: "AIzaSyA8UUSVJ9gX0JdC04ke6FpEV5yix9FR3Is",
             authDomain: "neuroinsight-9a401.firebaseapp.com",
@@ -256,63 +241,36 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        let isSignUpMode = false; // 기본 모드는 로그인(Sign In)
-
-        const formTitle = document.getElementById('formTitle');
-        const formSubTitle = document.getElementById('formSubTitle');
-        const submitBtn = document.getElementById('submitBtn');
-        const switchText = document.getElementById('switchText');
-        const switchBtn = document.getElementById('switchBtn');
-        const authForm = document.getElementById('authForm');
-
-        // 로그인 <-> 회원가입 모드 전환 기능
-        switchBtn.addEventListener('click', (e) => {
+        document.getElementById("signupForm").addEventListener("submit", (e) => {
             e.preventDefault();
-            isSignUpMode = !isSignUpMode;
+            
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
 
-            if (isSignUpMode) {
-                formTitle.textContent = "Create Account";
-                formSubTitle.textContent = "Join the advanced therapeutics study";
-                submitBtn.textContent = "Sign Up";
-                switchText.textContent = "Already have an account?";
-                switchBtn.textContent = "Sign In";
-            } else {
-                formTitle.textContent = "Sign In";
-                formSubTitle.textContent = "Access the NeuroInsight research platform";
-                submitBtn.textContent = "Sign In";
-                switchText.textContent = "New to NeuroInsight?";
-                switchBtn.textContent = "Create an account";
-            }
-            authForm.reset();
-        });
-
-        // 폼 제출 이벤트 처리 (Firebase Auth 연결)
-        authForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            if (isSignUpMode) {
-                // 회원가입 프로세스
-                createUserWithEmailAndPassword(auth, email, password)
-                    .then((userCredential) => {
-                        alert("회원가입이 완료되었습니다! 자동으로 로그인됩니다.");
-                        window.location.href = "index.html";
-                    })
-                    .catch((error) => {
-                        alert("회원가입 실패: " + error.message);
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    // 회원가입 시 입력받은 이름으로 프로필 업데이트
+                    return updateProfile(user, {
+                        displayName: name
+                    }).then(() => {
+                        alert("회원가입이 완료되었습니다! 메인 페이지로 이동합니다.");
+                        window.location.href = "index.html"; // 가입 성공 시 홈으로 리다이렉트
                     });
-            } else {
-                // 로그인 프로세스
-                signInWithEmailAndPassword(auth, email, password)
-                    .then((userCredential) => {
-                        alert("성공적으로 로그인되었습니다.");
-                        window.location.href = "index.html";
-                    })
-                    .catch((error) => {
-                        alert("로그인 실패: 이메일 또는 비밀번호를 확인하세요.");
-                    });
-            }
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    
+                    if(errorCode === 'auth/email-already-in-use') {
+                        alert("이미 사용 중인 이메일입니다.");
+                    } else if (errorCode === 'auth/weak-password') {
+                        alert("비밀번호는 6자리 이상이어야 합니다.");
+                    } else {
+                        alert("회원가입 오류: " + errorMessage);
+                    }
+                });
         });
     </script>
 </body>
