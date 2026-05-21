@@ -551,7 +551,7 @@
         </div>
     </footer>
 
-    <script type="module">
+      <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
@@ -568,6 +568,13 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
+        // [초강력 안전장치] 로그인 상태를 기다리지 않고, 브라우저에 저장된 사진이 있으면 즉시 상단 바에 적용
+        const instantLocalPic = localStorage.getItem("myProfileImg");
+        if (instantLocalPic) {
+            const userPhoto = document.getElementById('userPhoto');
+            if (userPhoto) userPhoto.src = instantLocalPic;
+        }
+
         onAuthStateChanged(auth, (user) => {
             const userProfile = document.getElementById('userProfile');
             const userPhoto = document.getElementById('userPhoto');
@@ -578,11 +585,11 @@
                 userProfile.style.display = "flex";
                 userNameDisplay.textContent = user.displayName || "Researcher";
                 
-                // [수정 핵심] 마이페이지에서 로컬 브라우저에 저장한 최신 사진이 있는지 우선 확인해서 적용합니다.
+                // 마이페이지에서 저장한 사진이 있으면 우선 적용, 없으면 기본 프로필 적용
                 const localPic = localStorage.getItem("myProfileImg");
                 userPhoto.src = localPic ? localPic : (user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png");
 
-                // 프로필 누르면 마이페이지로 이동하는 기능
+                // 프로필 누르면 마이페이지로 이동
                 userProfile.onclick = () => {
                     window.location.href = "mypage.html";
                 };
@@ -591,7 +598,7 @@
                 authBtn.href = "#";
                 authBtn.onclick = (e) => {
                     e.preventDefault();
-                    // 로그아웃 시 로컬 스토리지에 남아있던 사진 캐시 정보도 깔끔하게 비워줍니다.
+                    // 로그아웃 시 저장된 프로필 이미지도 함께 삭제
                     localStorage.removeItem("myProfileImg");
                     signOut(auth).then(() => {
                         alert("로그아웃 되었습니다.");
