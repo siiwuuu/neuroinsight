@@ -181,9 +181,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
-        // 이미지 업로드를 위해 Storage를 연동할 기초 설정 탑재 가능 공간
-        // import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA8UUSVJ9gX0JdC04ke6FpEV5yix9FR3Is",
@@ -201,42 +199,37 @@
         // 유저 인증 상태 실시간 모니터링 및 UI 맵핑
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // 1. 회원가입 시 입력했던 이름(displayName)과 이메일 연동
                 document.getElementById("userName").textContent = user.displayName || "익명 연구원";
                 document.getElementById("userEmail").textContent = user.email;
                 
-                // 2. 가입 유저가 설정한 프로필 이미지가 있다면 연동
-                if (user.photoURL) {
+                // [수정 핵심] 로컬 브라우저에 저장해 둔 사진 정보가 있다면 우선적으로 불러옵니다.
+                const localPic = localStorage.getItem("myProfileImg");
+                if (localPic) {
+                    document.getElementById("profileImg").src = localPic;
+                } else if (user.photoURL) {
                     document.getElementById("profileImg").src = user.photoURL;
                 }
-
-                // [추후 연동 가이드] 이곳에 Firestore 등을 연결하여 
-                // 해당 user.uid와 일치하는 authorID를 가진 로그 글만 쿼리해 와서 'myLogList'에 append 하면 마이 로그 모아보기가 완성됩니다.
                 
             } else {
-                // 로그인 안 된 접근자는 다시 로그인 창으로 리다이렉트 보호 조치
                 alert("인증 세션이 만료되었거나 권한이 없습니다. 로그인 페이지로 이동합니다.");
                 window.location.href = "login.html";
             }
         });
 
-        // 프로필 사진 변경 가상 제어 로직 (Storage 연동 전 클라이언트 단 프리뷰 및 프로필 업데이트 아키텍처)
+        // 프로필 사진 변경 로직 (로컬 스토리지 연동 추가)
         document.getElementById("fileInput").addEventListener("change", (e) => {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
-                    // 화면 이미지 즉시 변경
-                    document.getElementById("profileImg").src = event.target.result;
+                    const imgData = event.target.result;
                     
-                    // 실제 Firebase Auth 프로필의 photoURL도 동시 로컬 업데이트 처리
-                    if(auth.currentUser) {
-                        updateProfile(auth.currentUser, {
-                            photoURL: event.target.result // 실제 서비스 고도화 시에는 Storage 업로드 후 URL 입력 권장
-                        }).then(() => {
-                            alert("프로필 사진이 성공적으로 업데이트되었습니다.");
-                        });
-                    }
+                    // 1. 현재 화면 이미지 변경
+                    document.getElementById("profileImg").src = imgData;
+                    
+                    // 2. [수정 핵심] 홈 화면(index.html)에서도 이 이미지를 가져다 쓸 수 있도록 브라우저에 임시 저장합니다.
+                    localStorage.setItem("myProfileImg", imgData);
+                    alert("프로필 사진이 성공적으로 업데이트되었습니다.");
                 };
                 reader.readAsDataURL(file);
             }
@@ -244,6 +237,8 @@
 
         // 로그아웃 시스템 작동
         document.getElementById("logoutBtn").addEventListener("click", () => {
+            // [수정 핵심] 로그아웃할 때 브라우저에 저장되어 있던 프로필 사진 데이터 캐시도 함께 지워줍니다.
+            localStorage.removeItem("myProfileImg");
             signOut(auth).then(() => {
                 alert("연구 세션이 종료되었습니다.");
                 window.location.href = "index.html";
